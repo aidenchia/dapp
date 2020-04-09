@@ -14,9 +14,15 @@ pragma solidity ^0.5.0;
 	app.rePost(1)
 */
 
+import {strings} from "strings.sol";
+
 contract SocialNetwork {
+	using strings for *;
+
 	string public name;
 	uint public numPosts;
+	uint public bid;
+	uint public offer;
 	mapping(uint => Post) public posts;
 
 	struct Post {
@@ -40,7 +46,14 @@ contract SocialNetwork {
 
 		// Store post in mapping
 		posts[numPosts] = Post(numPosts, _content, 0, msg.sender, 0);
+
+		// Check if it's a quote
+		strings.slice memory slice = _content.toSlice();
+		if (slice.startsWith("BID:".toSlice())) {
+			bid++;
+		}
 	}
+
 
 	function likePost(uint _id) public {
 		// Require id to be greater than 0 and smaller than num posts
@@ -83,5 +96,4 @@ contract SocialNetwork {
 		// Repost same content but with current user
 		createPost(_content);
 	}
-
 }
