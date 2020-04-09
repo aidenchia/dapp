@@ -78,9 +78,23 @@ contract("SocialNetwork", function(accounts) {
 			contract = instance;
 			return instance.rewardPost(1, {value: 2});
 		}).then(function() {
-			return contract.posts(1)
+			return contract.posts(1);
 		}).then(function(post) {
 			assert.equal(post[4], 2, "post rewards should increment by argument passed in rewardPost")
+		});
+	});
+
+	it("should repost correctly", function() {
+		return SocialNetwork.deployed().then(function(instance) {
+			contract = instance;
+		}).then(async function() {
+			await contract.rePost(1, {from: accounts[1]});
+			return contract.numPosts();
+		}).then(function(numPosts) {
+			assert.equal(numPosts, 2, "no. of posts should increase by 1");
+			return contract.posts(2);
+		}).then(function(post) {
+			assert.equal(post[3], accounts[1], "repost author should be as specified in arg passed to rePost function");
 		});
 	});
 })
