@@ -43,7 +43,7 @@ contract SocialNetwork {
 	}
 
 	constructor() public {
-		name = "Dwitter Social Network";
+		name = "Agora";
 	}
 
 	function createPost(string memory _content) public {
@@ -63,17 +63,38 @@ contract SocialNetwork {
 	function newQuote(string memory _content) public {
 		strings.slice memory slice = _content.toSlice();
 		if (slice.startsWith("BID:".toSlice())) {
+			// All bids should increment bidSize
 			bidSize ++;
+			
+			// Use imported strings library to help with string util functions
 			strings.slice memory _ = slice.split(":".toSlice());
 			string memory order = slice.toString();
-			bid = stringToUint(order);
+
+			// Convert string to uint
+			uint newBid = stringToUint(order);
+
+			// Market bid should always reflect currently best(highest) bid
+			if (newBid >= bid) {
+				bid = newBid;
+			}
 		}
 
 		else if (slice.startsWith("OFFER:".toSlice())) {
+			// All offers should increment offerSize
 			offerSize ++;
+
+			// Use imported strings library to help with string util functons
 			strings.slice memory _ = slice.split(":".toSlice());
 			string memory order = slice.toString();
+
+			// Convert string to uint
 			offer = stringToUint(order);
+
+			// Market offer should always reflect currently best(lowest) offer
+			uint newOffer = stringToUint(order);
+			if (newOffer <= offer) {
+				offer = newOffer;
+			}
 		}
 
 		else {

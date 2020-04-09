@@ -12,7 +12,7 @@ contract("SocialNetwork", function(accounts) {
 		return SocialNetwork.deployed().then(function(instance) {
 			return instance.name();
 		}).then(function(name) {
-			assert.equal(name, "Dwitter Social Network")
+			assert.equal(name, "Agora")
 		});
 	});
 
