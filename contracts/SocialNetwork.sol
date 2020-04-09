@@ -1,5 +1,15 @@
 pragma solidity ^0.5.0;
 
+/* To run on truffle console:
+	SocialNetwork.deployed().then(function(a) {app=a})
+	app.createPost("tweeeeeet")
+	app.posts(1).then(function(p) {posts=p})
+	posts[0].toNumber()
+	posts[1]
+	posts[4].toNumber()
+	app.rewardPost(1, {value: 2})
+*/
+
 contract SocialNetwork {
 	string public name;
 	uint public numPosts;
@@ -10,6 +20,7 @@ contract SocialNetwork {
 		string content;
 		uint likes;
 		address payable author;
+		uint rewards;
 	}
 
 	constructor() public {
@@ -24,7 +35,7 @@ contract SocialNetwork {
 		numPosts ++;
 
 		// Store post in mapping
-		posts[numPosts] = Post(numPosts, _content, 0, msg.sender);
+		posts[numPosts] = Post(numPosts, _content, 0, msg.sender, 0);
 	}
 
 	function likePost(uint _id) public {
@@ -50,6 +61,12 @@ contract SocialNetwork {
 
 		// Pay author of post
 		address(_author).transfer(msg.value);
+
+		// Increment post reward
+		_post.rewards += msg.value;
+
+		// Update the post
+		posts[_id] = _post;
 	}
 
 }
