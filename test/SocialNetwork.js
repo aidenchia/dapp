@@ -31,9 +31,20 @@ contract("SocialNetwork", function(accounts) {
 		}).then(function() {
 			return contract.posts(1)
 		}).then(function(post) {
-			assert.equal(post[0], 1);
-			assert.equal(post[1], "tweet");
-			assert.equal(post[2], 0);
+			assert.equal(post[0], 1, "id of first post should equal to 1");
+			assert.equal(post[1], "tweet", "content of post should be equal to argument passed to create post function");
+			assert.equal(post[2], 0, "no. of likes should init as zero");
+		});
+	});
+
+	it("should like post correctly", function() {
+		return SocialNetwork.deployed().then(function(instance) {
+			contract = instance;
+			return instance.likePost(1);
+		}).then(function() {
+			return contract.posts(1)
+		}).then(function(post) {
+			assert.equal(post[2], 1, "no. of likes should increment by 1");
 		});
 	});
 })
