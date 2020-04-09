@@ -52,18 +52,24 @@ contract("SocialNetwork", function(accounts) {
 		});
 	});
 
-	it("should revert if post doesn't meet length requirements", function() {
+	it("should revert if post is of length zero", function() {
 		return SocialNetwork.deployed().then(async function(instance) {
 			await truffleAssert.reverts(instance.createPost(""));
 		});
 	});
 
-	it("should revert if argument passed to likePost not between 0 and numPosts", function() {
+	it("should revert if argument passed to likePost, rewardPost, and rePost not between 0 and numPosts", function() {
 		return SocialNetwork.deployed().then(function(instance) {
 			contract = instance;
 			return contract.numPosts();
 		}).then(async function(numPosts) {
+			await truffleAssert.reverts(contract.likePost(0));
+			await truffleAssert.reverts(contract.rewardPost(0));
+			await truffleAssert.reverts(contract.rePost(0));
+
 			await truffleAssert.reverts(contract.likePost(numPosts+1));
+			await truffleAssert.reverts(contract.rewardPost(numPosts+1));
+			await truffleAssert.reverts(contract.rePost(numPosts+1));
 		});
 	});
 
