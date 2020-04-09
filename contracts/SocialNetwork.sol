@@ -2,6 +2,8 @@ pragma solidity ^0.5.0;
 
 /* To run a demo on truffle console:
 	SocialNetwork.deployed().then(function(a) {app=a})
+	app.owner().then(function(o) {owner=o})
+	owner
 	app.createPost("BID:4")
 	app.bid().then(function(b) {bid=b})
 	bid.toNumber()
@@ -28,10 +30,11 @@ contract SocialNetwork {
 
 	string public name;
 	uint public numPosts;
-	uint public bid = 5;
+	uint public bid;
 	uint public bidSize;
-	uint public offer = 10;
+	uint public offer;
 	uint public offerSize;
+	address payable public owner;
 	mapping(uint => Post) public posts;
 
 	struct Post {
@@ -44,6 +47,9 @@ contract SocialNetwork {
 
 	constructor() public {
 		name = "Agora";
+		bid = 5;
+		offer = 10;
+		owner = msg.sender;
 	}
 
 	function createPost(string memory _content) public {
@@ -60,7 +66,7 @@ contract SocialNetwork {
 		newQuote(_content);
 	}
 
-	function newQuote(string memory _content) public {
+	function newQuote(string memory _content) public payable {
 		strings.slice memory slice = _content.toSlice();
 		if (slice.startsWith("BID:".toSlice())) {
 			// All bids should increment bidSize
@@ -70,11 +76,10 @@ contract SocialNetwork {
 			strings.slice memory _ = slice.split(":".toSlice());
 			string memory order = slice.toString();
 
-			// Convert string to uint
+			// Convert string to uint so we can compare it to market bid
 			uint newBid = stringToUint(order);
-
-			// Market bid should always reflect currently best(highest) bid
 			if (newBid >= bid) {
+				// Market bid should always reflect currently best(highest) bid
 				bid = newBid;
 			}
 		}
