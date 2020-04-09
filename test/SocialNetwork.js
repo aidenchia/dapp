@@ -1,6 +1,10 @@
 // Truffle needs to be explicitly told which contracts we'll need
 const SocialNetwork = artifacts.require("./SocialNetwork.sol");
 
+// Get truffle-assertions library to help test require statements
+const truffleAssert = require('truffle-assertions');
+
+
 contract("SocialNetwork", function(accounts) {
 	var contract;
 
@@ -42,9 +46,15 @@ contract("SocialNetwork", function(accounts) {
 			contract = instance;
 			return instance.likePost(1);
 		}).then(function() {
-			return contract.posts(1)
+			return contract.posts(1);
 		}).then(function(post) {
 			assert.equal(post[2], 1, "no. of likes should increment by 1");
+		});
+	});
+
+	it("should revert if argument passed to likePost not between 0 and numPosts", function() {
+		return SocialNetwork.deployed().then(async function(instance) {
+			await truffleAssert.reverts(instance.likePost(99))
 		});
 	});
 
