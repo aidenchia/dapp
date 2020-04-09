@@ -2,7 +2,9 @@ pragma solidity ^0.5.0;
 
 /* To run a demo on truffle console:
 	SocialNetwork.deployed().then(function(a) {app=a})
-	app.createPost("OFFER:4")
+	app.createPost("BID:4")
+	app.bidSize().then(function(b) {bidSize=b})
+	bidSize.toNumber()
 	app.posts(1).then(function(p) {posts=p})
 	posts[0].toNumber()
 	posts[1]
@@ -21,8 +23,10 @@ contract SocialNetwork {
 
 	string public name;
 	uint public numPosts;
-	uint public bid;
-	uint public offer;
+	string public bid;
+	uint public bidSize;
+	string public offer;
+	uint public offerSize;
 	mapping(uint => Post) public posts;
 
 	struct Post {
@@ -48,9 +52,25 @@ contract SocialNetwork {
 		posts[numPosts] = Post(numPosts, _content, 0, msg.sender, 0);
 
 		// Check if it's a quote
+		newQuote(_content);
+	}
+
+	function newQuote(string memory _content) public {
 		strings.slice memory slice = _content.toSlice();
-		if (slice.startsWith("BID:".toSlice()) || slice.startsWith("OFFER:".toSlice())) {
-			bid++;
+		if (slice.startsWith("BID:".toSlice())) {
+			bidSize ++;
+			strings.slice memory _ = slice.split(":".toSlice());
+			string memory order = slice.toString();
+		}
+
+		else if (slice.startsWith("OFFER:".toSlice())) {
+			offerSize ++;
+			strings.slice memory _ = slice.split(":".toSlice());
+			string memory order = slice.toString();
+		}
+
+		else {
+			return;
 		}
 	}
 
