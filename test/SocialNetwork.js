@@ -29,7 +29,7 @@ contract("SocialNetwork", function(accounts) {
 			contract = instance;
 			return instance.createPost("tweet");
 		}).then(function() {
-			return contract.numPosts()
+			return contract.numPosts();
 		}).then(function(numPosts) {
 			assert.equal(numPosts,1, "Create posts should increment no. of posts by 1");
 		}).then(function() {
@@ -53,8 +53,11 @@ contract("SocialNetwork", function(accounts) {
 	});
 
 	it("should revert if argument passed to likePost not between 0 and numPosts", function() {
-		return SocialNetwork.deployed().then(async function(instance) {
-			await truffleAssert.reverts(instance.likePost(99))
+		return SocialNetwork.deployed().then(function(instance) {
+			contract = instance;
+			return contract.numPosts();
+		}).then(async function(numPosts) {
+			await truffleAssert.reverts(contract.likePost(numPosts+1));
 		});
 	});
 
