@@ -3,8 +3,13 @@ pragma solidity ^0.5.0;
 /* To run a demo on truffle console:
 	SocialNetwork.deployed().then(function(a) {app=a})
 	app.createPost("BID:4")
+	app.bid().then(function(b) {bid=b})
+	bid.toNumber()
 	app.bidSize().then(function(b) {bidSize=b})
 	bidSize.toNumber()
+	app.createPost("OFFER:4")
+	app.offerSize().then(function(o) {offerSize=o})
+	offerSize.toNumber()
 	app.posts(1).then(function(p) {posts=p})
 	posts[0].toNumber()
 	posts[1]
@@ -23,9 +28,9 @@ contract SocialNetwork {
 
 	string public name;
 	uint public numPosts;
-	string public bid;
+	uint public bid;
 	uint public bidSize;
-	string public offer;
+	uint public offer;
 	uint public offerSize;
 	mapping(uint => Post) public posts;
 
@@ -61,12 +66,14 @@ contract SocialNetwork {
 			bidSize ++;
 			strings.slice memory _ = slice.split(":".toSlice());
 			string memory order = slice.toString();
+			bid = stringToUint(order);
 		}
 
 		else if (slice.startsWith("OFFER:".toSlice())) {
 			offerSize ++;
 			strings.slice memory _ = slice.split(":".toSlice());
 			string memory order = slice.toString();
+			offer = stringToUint(order);
 		}
 
 		else {
@@ -74,6 +81,19 @@ contract SocialNetwork {
 		}
 	}
 
+	function stringToUint(string memory s) internal returns (uint result) {
+		bytes memory b = bytes(s);
+		uint i;
+		result = 0;
+		for (i = 0; i < b.length; i++) {
+			uint c = uint(uint8(b[i]));
+			if (c >= 48 && c <= 57) {
+				result = result * 10 + (c - 48);
+			}
+		}
+
+		return result;
+	}
 
 	function likePost(uint _id) public {
 		// Require id to be greater than 0 and smaller than num posts
