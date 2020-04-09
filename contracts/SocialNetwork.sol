@@ -8,10 +8,23 @@ contract SocialNetwork {
 	struct Post {
 		uint id;
 		string content;
+		uint likes;
+		address payable author;
 	}
 
 	constructor() public {
 		name = "Dwitter Social Network";
+	}
+
+	function createPost(string memory _content) public {
+		// Require content to be longer than 0 bytes and shorter than 560 bytes
+		require(bytes(_content).length > 0 && bytes(_content).length < 560);
+
+		// Increment num posts
+		numPosts ++;
+
+		// Store post in mapping
+		posts[numPosts] = Post(numPosts, _content, 0, msg.sender);
 	}
 
 }
