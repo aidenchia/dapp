@@ -27,4 +27,12 @@ contract SocialNetwork {
 		posts[numPosts] = Post(numPosts, _content, 0, msg.sender);
 	}
 
+	function likePost(uint _id) public {
+		// Require id to be greater than 0 and smaller than num posts
+		require(_id > 0 && _id <= numPosts);
+
+		// Increment the number of likes
+		posts[_id].likes ++;
+	}
+
 }
