@@ -28,9 +28,9 @@ contract SocialNetwork {
 
 	string public name;
 	uint public numPosts;
-	uint public bid;
+	uint public bid = 5;
 	uint public bidSize;
-	uint public offer;
+	uint public offer = 10;
 	uint public offerSize;
 	mapping(uint => Post) public posts;
 
