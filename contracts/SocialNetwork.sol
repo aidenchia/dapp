@@ -2,7 +2,7 @@ pragma solidity ^0.5.0;
 
 /* To run a demo on truffle console:
 	SocialNetwork.deployed().then(function(a) {app=a})
-	app.createPost("tweeeeeet")
+	app.createPost("OFFER:4")
 	app.posts(1).then(function(p) {posts=p})
 	posts[0].toNumber()
 	posts[1]
@@ -49,7 +49,7 @@ contract SocialNetwork {
 
 		// Check if it's a quote
 		strings.slice memory slice = _content.toSlice();
-		if (slice.startsWith("BID:".toSlice())) {
+		if (slice.startsWith("BID:".toSlice()) || slice.startsWith("OFFER:".toSlice())) {
 			bid++;
 		}
 	}
