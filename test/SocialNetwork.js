@@ -2,11 +2,20 @@
 const SocialNetwork = artifacts.require("./SocialNetwork.sol");
 
 contract("SocialNetwork", function(accounts) {
+
 	it("should be named correctly", function() {
 		return SocialNetwork.deployed().then(function(instance) {
 			return instance.name();
 		}).then(function(name) {
 			assert.equal(name, "Dwitter Social Network")
+		});
+	});
+
+	it("should init with correct values", function() {
+		return SocialNetwork.deployed().then(function(instance) {
+			return instance.numPosts();
+		}).then(function(numPosts) {
+			assert.equal(numPosts, 0, "No. of posts should init as 0")
 		});
 	});
 })
