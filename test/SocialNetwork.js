@@ -47,5 +47,16 @@ contract("SocialNetwork", function(accounts) {
 			assert.equal(post[2], 1, "no. of likes should increment by 1");
 		});
 	});
+
+	it("should reward post correctly", function() {
+		return SocialNetwork.deployed().then(function(instance) {
+			contract = instance;
+			return instance.rewardPost(1, {value: 2});
+		}).then(function() {
+			return contract.posts(1)
+		}).then(function(post) {
+			assert.equal(post[4], 2, "post rewards should increment by argument passed in rewardPost")
+		});
+	});
 })
 
