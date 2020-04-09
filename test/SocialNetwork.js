@@ -52,6 +52,12 @@ contract("SocialNetwork", function(accounts) {
 		});
 	});
 
+	it("should revert if post doesn't meet length requirements", function() {
+		return SocialNetwork.deployed().then(async function(instance) {
+			await truffleAssert.reverts(instance.createPost(""));
+		});
+	});
+
 	it("should revert if argument passed to likePost not between 0 and numPosts", function() {
 		return SocialNetwork.deployed().then(function(instance) {
 			contract = instance;
