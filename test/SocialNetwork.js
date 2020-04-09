@@ -28,6 +28,12 @@ contract("SocialNetwork", function(accounts) {
 			return contract.numPosts()
 		}).then(function(numPosts) {
 			assert.equal(numPosts,1, "Create posts should increment no. of posts by 1");
+		}).then(function() {
+			return contract.posts(1)
+		}).then(function(post) {
+			assert.equal(post[0], 1);
+			assert.equal(post[1], "tweet");
+			assert.equal(post[2], 0);
 		});
 	});
 })
