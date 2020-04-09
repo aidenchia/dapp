@@ -35,4 +35,21 @@ contract SocialNetwork {
 		posts[_id].likes ++;
 	}
 
+	function rewardPost(uint _id) public payable {
+		// Require id to be greater than 0 and smaller than num posts
+		require(_id > 0 && _id <= numPosts);
+
+		// Require balance > reward
+		require(address(msg.sender).balance > msg.value);
+
+		// Get post
+		Post memory _post = posts[_id];
+
+		// Get author of post
+		address payable _author = _post.author;
+
+		// Pay author of post
+		address(_author).transfer(msg.value);
+	}
+
 }
