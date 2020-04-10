@@ -97,5 +97,7 @@ contract("SocialNetwork", function(accounts) {
 			assert.equal(post[3], accounts[1], "repost author should be as specified in arg passed to rePost function");
 		});
 	});
+
+	
 })
 

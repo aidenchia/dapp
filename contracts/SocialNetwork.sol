@@ -2,8 +2,8 @@ pragma solidity ^0.5.0;
 
 /* To run a demo on truffle console:
 	SocialNetwork.deployed().then(function(a) {app=a})
-	app.workForDrachma({from: }).then(function(i) {i=i})
 	web3.eth.getAccounts()
+	app.workForDrachma({from: }).then(function(i) {i=i})
 	app.transferDrachma().then(function(i) {i=i})
 	app.buyFromMerchant({from: }).then(function(i) {i=i})
 	app.balances().then(function(b) {balance=b})
@@ -109,25 +109,51 @@ contract SocialNetwork {
 	}
 
 	function random(uint max) internal returns (uint) {
+		// Pseudo randomly generate number from 1 to max
+
+		// Prevent modulo by zero error
+		if (max == 0) {
+			max ++;
+		}
+
 		uint random = uint(keccak256(abi.encodePacked(now, msg.sender, nonce)))%max + 1;
 		nonce ++;
 		return random;
 	}
 
+	event FailedBid(uint _newBid, uint bid);
+
 	function newQuote(string memory _content) public {
 		strings.slice memory slice = _content.toSlice();
 		if (slice.startsWith("BID:".toSlice())) {
-			// All bids should increment bidSize
-			bidSize ++;
 			
 			// Use imported strings library to help with string util functions
 			strings.slice memory _ = slice.split(":".toSlice());
 			string memory order = slice.toString();
-
+			
 			// Convert string to uint so we can compare it to market bid
 			uint newBid = stringToUint(order);
+
+			// Require address to have enough balance to make bid
+			require(balances[msg.sender] >= bid, "Insufficient balance to make bid");
+
+			// All bids should increment bidSize
+			bidSize ++;
+
+			// No rational person will bid more than what the current market offer is
+			if (newBid >= offer) {
+				newBid = offer;
+			}
+			
 			if (newBid >= bid) {
-				// Bid price is at least at mark price for market market to sell inventory
+				
+				uint x = offer - newBid;
+
+				// Closer the bid is to the offer, higher chance of transaction taking place
+				if (random(x) >= (offer - bid) / 2) {
+					emit FailedBid(newBid, bid);
+					return;
+				}
 
 				// Transfer money to current market maker
 				transferDrachma(msg.sender, marketMaker, newBid);
