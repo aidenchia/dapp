@@ -14,12 +14,14 @@ pragma solidity ^0.5.0;
 	mm
 	web3.eth.getAccounts()
 	web3.eth.getBalance()
-	app.createPost("BID:6", {from: })
+	app.createPost("BID:20", {from: })
 	app.bid().then(function(b) {bid=b})
 	bid.toNumber()
 	app.bidSize().then(function(b) {bidSize=b})
 	bidSize.toNumber()
-	app.createPost("OFFER:9")
+	app.createPost("OFFER:25")
+	app.offer().then(function(o) {offer=o})
+	offer.toNumber()
 	app.offerSize().then(function(o) {offerSize=o})
 	offerSize.toNumber()
 	app.posts(1).then(function(p) {posts=p})
@@ -45,6 +47,7 @@ contract SocialNetwork {
 	uint public offer;
 	uint public offerSize;
 	uint public merchantPrice;
+	uint public nonce;
 	address payable public marketMaker;
 	mapping(uint => Post) public posts;
 	mapping(address => uint) public balances;
@@ -63,7 +66,12 @@ contract SocialNetwork {
 		bid = 10;
 		offer = 20;
 		marketMaker = msg.sender;
-		merchantPrice = 30;
+		merchantPrice = 15;
+		nonce = 1;
+
+		// default market maker to start with some inventory and drachma
+		workForDrachma(); 
+		buyFromMerchant();
 	}
 
 	function buyFromMerchant() public {
@@ -100,6 +108,12 @@ contract SocialNetwork {
 		newQuote(_content);
 	}
 
+	function random(uint max) internal returns (uint) {
+		uint random = uint(keccak256(abi.encodePacked(now, msg.sender, nonce)))%max + 1;
+		nonce ++;
+		return random;
+	}
+
 	function newQuote(string memory _content) public {
 		strings.slice memory slice = _content.toSlice();
 		if (slice.startsWith("BID:".toSlice())) {
@@ -122,9 +136,11 @@ contract SocialNetwork {
 				inventories[msg.sender] += 1;
 				inventories[marketMaker] -= 1;
 
-				// Update market maker, bid and offer
+				// New market maker sets his own bid and offer spread according to PRNG function
 				marketMaker = msg.sender;
-
+				uint spread = random(10);
+				bid = newBid - spread / 2;
+				offer = newBid + spread / 2;
 			}
 		}
 
