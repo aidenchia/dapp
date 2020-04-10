@@ -67,6 +67,9 @@ contract SocialNetwork {
 	}
 
 	function transferDrachma(address _from, address _to, uint _amount) public {
+		// Require sufficient drachma before trf can take place
+		require(_amount <= balances[_from]);
+
 		balances[_from] -= _amount;
 		balances[_to] += _amount;
 	}
