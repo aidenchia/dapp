@@ -2,14 +2,20 @@ pragma solidity ^0.5.0;
 
 /* To run a demo on truffle console:
 	SocialNetwork.deployed().then(function(a) {app=a})
+	app.workForMoney().then(function(i) {i=i})
+	web3.eth.getAccounts()
+	app.balances().then(function(b) {balance=b})
+	balance.toNumber()
 	app.owner().then(function(o) {owner=o})
 	owner
-	app.createPost("BID:4")
+	web3.eth.getAccounts()
+	web3.eth.getBalance()
+	app.createPost("BID:9000", {from: })
 	app.bid().then(function(b) {bid=b})
 	bid.toNumber()
 	app.bidSize().then(function(b) {bidSize=b})
 	bidSize.toNumber()
-	app.createPost("OFFER:4")
+	app.createPost("OFFER:9")
 	app.offerSize().then(function(o) {offerSize=o})
 	offerSize.toNumber()
 	app.posts(1).then(function(p) {posts=p})
@@ -36,6 +42,7 @@ contract SocialNetwork {
 	uint public offerSize;
 	address payable public owner;
 	mapping(uint => Post) public posts;
+	mapping(address => uint) public balances;
 
 	struct Post {
 		uint id;
@@ -52,6 +59,11 @@ contract SocialNetwork {
 		owner = msg.sender;
 	}
 
+	function workForMoney() public {
+		// Get balance
+		balances[msg.sender] += 10;
+	}
+
 	function createPost(string memory _content) public {
 		// Require content to be longer than 0 bytes and shorter than 560 bytes
 		require(bytes(_content).length > 0 && bytes(_content).length < 560);
@@ -66,7 +78,7 @@ contract SocialNetwork {
 		newQuote(_content);
 	}
 
-	function newQuote(string memory _content) public payable {
+	function newQuote(string memory _content) public {
 		strings.slice memory slice = _content.toSlice();
 		if (slice.startsWith("BID:".toSlice())) {
 			// All bids should increment bidSize
