@@ -4,13 +4,14 @@ pragma solidity ^0.5.0;
 	SocialNetwork.deployed().then(function(a) {app=a})
 	app.workForMoney().then(function(i) {i=i})
 	web3.eth.getAccounts()
+	app.transferMoney().then(function(i) {i=i})
 	app.balances().then(function(b) {balance=b})
 	balance.toNumber()
 	app.owner().then(function(o) {owner=o})
 	owner
 	web3.eth.getAccounts()
 	web3.eth.getBalance()
-	app.createPost("BID:9000", {from: })
+	app.createPost("BID:4", {from: })
 	app.bid().then(function(b) {bid=b})
 	bid.toNumber()
 	app.bidSize().then(function(b) {bidSize=b})
@@ -59,9 +60,15 @@ contract SocialNetwork {
 		owner = msg.sender;
 	}
 
+
 	function workForMoney() public {
-		// Get balance
+		// Increases balance of address
 		balances[msg.sender] += 10;
+	}
+
+	function transferMoney(address _from, address _to, uint _amount) public {
+		balances[_from] -= _amount;
+		balances[_to] += _amount;
 	}
 
 	function createPost(string memory _content) public {
@@ -93,6 +100,9 @@ contract SocialNetwork {
 			if (newBid >= bid) {
 				// Market bid should always reflect currently best(highest) bid
 				bid = newBid;
+
+				// Transfer money to current owner
+				transferMoney(msg.sender, owner, bid);
 			}
 		}
 
