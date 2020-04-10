@@ -5,10 +5,13 @@ pragma solidity ^0.5.0;
 	app.workForDrachma({from: }).then(function(i) {i=i})
 	web3.eth.getAccounts()
 	app.transferDrachma().then(function(i) {i=i})
+	app.buyFromMerchant({from: }).then(function(i) {i=i})
 	app.balances().then(function(b) {balance=b})
 	balance.toNumber()
-	app.owner().then(function(o) {owner=o})
-	owner
+	app.inventories().then(function(i) {inv=i})
+	inv.toNumber()
+	app.marketMaker().then(function(o) {mm=o})
+	mm
 	web3.eth.getAccounts()
 	web3.eth.getBalance()
 	app.createPost("BID:6", {from: })
@@ -41,9 +44,11 @@ contract SocialNetwork {
 	uint public bidSize;
 	uint public offer;
 	uint public offerSize;
-	address payable public owner;
+	uint public merchantPrice;
+	address payable public marketMaker;
 	mapping(uint => Post) public posts;
 	mapping(address => uint) public balances;
+	mapping(address => uint) public inventories;
 
 	struct Post {
 		uint id;
@@ -55,9 +60,16 @@ contract SocialNetwork {
 
 	constructor() public {
 		name = "Agora";
-		bid = 5;
-		offer = 10;
-		owner = msg.sender;
+		bid = 10;
+		offer = 20;
+		marketMaker = msg.sender;
+		merchantPrice = 30;
+	}
+
+	function buyFromMerchant() public {
+		require(balances[msg.sender] >= merchantPrice, "Insufficient balance to buy direct from merchant");
+		balances[msg.sender] -= merchantPrice;
+		inventories[msg.sender] += 1;
 	}
 
 
@@ -101,11 +113,18 @@ contract SocialNetwork {
 			// Convert string to uint so we can compare it to market bid
 			uint newBid = stringToUint(order);
 			if (newBid >= bid) {
-				// Market bid should always reflect currently best(highest) bid
-				bid = newBid;
+				// Bid price is at least at mark price for market market to sell inventory
 
-				// Transfer money to current owner
-				transferDrachma(msg.sender, owner, bid);
+				// Transfer money to current market maker
+				transferDrachma(msg.sender, marketMaker, newBid);
+
+				// Update inventory
+				inventories[msg.sender] += 1;
+				inventories[marketMaker] -= 1;
+
+				// Update market maker, bid and offer
+				marketMaker = msg.sender;
+
 			}
 		}
 
