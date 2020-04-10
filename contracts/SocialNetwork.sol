@@ -2,16 +2,16 @@ pragma solidity ^0.5.0;
 
 /* To run a demo on truffle console:
 	SocialNetwork.deployed().then(function(a) {app=a})
-	app.workForMoney().then(function(i) {i=i})
+	app.workForDrachma({from: }).then(function(i) {i=i})
 	web3.eth.getAccounts()
-	app.transferMoney().then(function(i) {i=i})
+	app.transferDrachma().then(function(i) {i=i})
 	app.balances().then(function(b) {balance=b})
 	balance.toNumber()
 	app.owner().then(function(o) {owner=o})
 	owner
 	web3.eth.getAccounts()
 	web3.eth.getBalance()
-	app.createPost("BID:4", {from: })
+	app.createPost("BID:6", {from: })
 	app.bid().then(function(b) {bid=b})
 	bid.toNumber()
 	app.bidSize().then(function(b) {bidSize=b})
@@ -61,12 +61,12 @@ contract SocialNetwork {
 	}
 
 
-	function workForMoney() public {
+	function workForDrachma() public {
 		// Increases balance of address
-		balances[msg.sender] += 10;
+		balances[msg.sender] += 50;
 	}
 
-	function transferMoney(address _from, address _to, uint _amount) public {
+	function transferDrachma(address _from, address _to, uint _amount) public {
 		balances[_from] -= _amount;
 		balances[_to] += _amount;
 	}
@@ -102,7 +102,7 @@ contract SocialNetwork {
 				bid = newBid;
 
 				// Transfer money to current owner
-				transferMoney(msg.sender, owner, bid);
+				transferDrachma(msg.sender, owner, bid);
 			}
 		}
 
