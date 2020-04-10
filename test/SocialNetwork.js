@@ -7,6 +7,7 @@ const truffleAssert = require('truffle-assertions');
 
 contract("SocialNetwork", function(accounts) {
 	var contract;
+	const workPay = 50;
 
 	it("should be named correctly", function() {
 		return SocialNetwork.deployed().then(function(instance) {
@@ -98,6 +99,15 @@ contract("SocialNetwork", function(accounts) {
 		});
 	});
 
-	
+	it("should allocate drachma to account that calls workForDrachma", function() {
+		return SocialNetwork.deployed().then(function(instance) {
+			contract = instance;
+			return contract.workForDrachma({from: accounts[1]});
+		}).then(function() {
+			return contract.balances(accounts[1]);
+		}).then(function(balance) {
+			assert.equal(balance, workPay);
+		});
+	});
 })
 

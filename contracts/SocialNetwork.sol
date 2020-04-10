@@ -3,7 +3,6 @@ pragma solidity ^0.5.0;
 /* To run a demo on truffle console:
 	SocialNetwork.deployed().then(function(a) {app=a})
 	web3.eth.getAccounts()
-	app.workForDrachma({from: }).then(function(i) {i=i})
 	app.transferDrachma().then(function(i) {i=i})
 	app.buyFromMerchant({from: }).then(function(i) {i=i})
 	app.balances().then(function(b) {balance=b})
