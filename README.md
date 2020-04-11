@@ -7,6 +7,7 @@ Dapp for Blockchain module
 * truffle is a framework for building, deploying, testing applications on Ethereum
 * Ganache is a personal blockchain which you can use to run tests, execute commands, and inspect state
 * useful library to work with strings in solidity: https://github.com/Arachnid/solidity-stringutils 
+* how to import and use solidity libraries: https://medium.com/@jeancvllr/solidity-tutorial-all-about-libraries-762e5a3692f9
 * `truffle console` to interact with blockchain
 * `truffle migrate --reset` to reset contract address. Contracts cannot be updated on the blockchain, migration just points to new address
 * `web3.eth.getAccounts()` to get all account addresses
@@ -22,11 +23,11 @@ Dapp for Blockchain module
 * use `require(...)` statements to revert if condition does not hold true
 * use truffle-assertions library to test require statements easily
 * Metamask is a Chrome extension to connect your browser to the blockchain
-* how to import and use solidity libraries: https://medium.com/@jeancvllr/solidity-tutorial-all-about-libraries-762e5a3692f9
+
 
 
 #### JavaScript / node.JS
-* let and const are block-scoped while var is function-scoped
+* `let` and `const` are block-scoped while `var` is function-scoped
 * async/await pattern allows you to work with JS promises more easily
 * arrow functions () => in JS cuts down a lot of typing
 * npm automatically looks for package.json in root to download dependencies specified
