@@ -25,7 +25,6 @@ Dapp for Blockchain module
 * Metamask is a Chrome extension to connect your browser to the blockchain
 
 
-
 #### JavaScript / node.JS
 * `let` and `const` are block-scoped while `var` is function-scoped
 * async/await pattern allows you to work with JS promises more easily
@@ -37,4 +36,4 @@ Dapp for Blockchain module
 #### Miscellaneous
 * if you push files to git repo and then include them in gitignore, git status will still show changes made to them as gitignore only works for untracked files 
 * if you accidentally pushed files or directories you no longer want to track, you can remove the tracked files via `git rm --cached filename` or `git rm -r --cached dir`
-
+* .DS_Store is a file auto created by Finder in macOS that stores custom attributes of folder, such as the position of icons
