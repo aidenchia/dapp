@@ -24,8 +24,6 @@ Dapp for Blockchain module
 * use `require(...)` statements to revert if condition does not hold true
 * use truffle-assertions library to test require statements easily
 
-
-
 #### JavaScript / node.JS
 * `let` and `const` are block-scoped while `var` is function-scoped
 * async/await pattern allows you to work with JS promises more easily
@@ -33,6 +31,7 @@ Dapp for Blockchain module
 * npm automatically looks for package.json in root to download dependencies specified
 * package-lock.json is automatically generated file that describes the exact node_modules tree that was generated, such that subsequent installs are able to generate identical trees, regardless of intermediate dependency updates.
 * ESLint statically analyzes your JS code to quickly find problems
+* Babel is a JS compiler that is used to convert ECMAScript 2015+ code for backwards compatibility
 
 #### Miscellaneous
 * if you push files to git repo and then include them in gitignore, git status will still show changes made to them as gitignore only works for untracked files 
