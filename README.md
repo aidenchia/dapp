@@ -9,6 +9,10 @@ Dapp for Blockchain module
 * useful library to work with strings in solidity: https://github.com/Arachnid/solidity-stringutils 
 * `truffle console` to interact with blockchain
 * `truffle migrate --reset` to reset contract address. Contracts cannot be updated on the blockchain, migration just points to new address
+* `web3.eth.getAccounts()` to get all account addresses
+* `web3.utils.toWei("1", "Ether")` to specify 1 ether without writing out 18 zeros
+* Solidity will auto create getter functions for all `public` variables 
+* `pure` modifier means function won't even read state
 * `truffle test` to run test file located under /test directory
 * tests can be written in JS or Solidity
 * Mocha framework and Chai assertions library comes bundled with truffle to help you run tests
@@ -22,6 +26,7 @@ Dapp for Blockchain module
 
 
 #### JavaScript / node.JS
+* let and const are block-scoped while var is function-scoped
 * async/await pattern allows you to work with JS promises more easily
 * arrow functions () => in JS cuts down a lot of typing
 * npm automatically looks for package.json in root to download dependencies specified
@@ -30,5 +35,5 @@ Dapp for Blockchain module
 
 #### Miscellaneous
 * if you push files to git repo and then include them in gitignore, git status will still show changes made to them as gitignore only works for untracked files 
-* if you accidentally pushed files or directories you no longer want to track, you can remove the tracked files via `git rm --cached _filename_` or `git rm -r --cached _dir_`
+* if you accidentally pushed files or directories you no longer want to track, you can remove the tracked files via `git rm --cached filename` or `git rm -r --cached dir`
 
