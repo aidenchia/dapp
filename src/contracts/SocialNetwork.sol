@@ -1,39 +1,5 @@
 pragma solidity ^0.5.0;
 
-/* To run a demo on truffle console:
-	SocialNetwork.deployed().then(function(a) {app=a})
-	web3.eth.getAccounts()
-	app.transferDrachma().then(function(i) {i=i})
-	app.buyFromMerchant({from: }).then(function(i) {i=i})
-	app.balances().then(function(b) {balance=b})
-	balance.toNumber()
-	app.inventories().then(function(i) {inv=i})
-	inv.toNumber()
-	app.marketMaker().then(function(o) {mm=o})
-	mm
-	web3.eth.getAccounts()
-	web3.eth.getBalance()
-	app.createPost("BID:20", {from: })
-	app.bid().then(function(b) {bid=b})
-	bid.toNumber()
-	app.bidSize().then(function(b) {bidSize=b})
-	bidSize.toNumber()
-	app.createPost("OFFER:25")
-	app.offer().then(function(o) {offer=o})
-	offer.toNumber()
-	app.offerSize().then(function(o) {offerSize=o})
-	offerSize.toNumber()
-	app.posts(1).then(function(p) {posts=p})
-	posts[0].toNumber()
-	posts[1]
-	posts[2].toNumber()
-	posts[3]
-	posts[4].toNumber()
-	app.rewardPost(1, {value: 2})
-	web3.eth.getAccounts()
-	app.rePost(1)
-*/
-
 import {strings} from "strings.sol";
 
 contract SocialNetwork {
@@ -229,7 +195,6 @@ contract SocialNetwork {
 		require(_id > 0 && _id <= numPosts);
 
 		// Require sufficient balance
-		require(address(msg.sender).balance > msg.value);
 
 		// Get post
 		Post memory _post = posts[_id];
