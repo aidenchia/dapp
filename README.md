@@ -5,7 +5,7 @@ Dapp for Blockchain module
 
 #### Blockchain / Solidity / Ethereum
 * truffle is a framework for building, deploying, testing applications on Ethereum
-* Ganache is a personal blockchain which you can use to run tests, execute commands, and inspect state while controlling how the chain operates
+* Ganache is a personal blockchain which you can use to run tests, execute commands, and inspect state
 * useful library to work with strings in solidity: https://github.com/Arachnid/solidity-stringutils 
 * truffle console to interact with blockchain
 * truffle migrate --reset to reset contract address. Contracts cannot be updated on the blockchain, migration just points to new address
