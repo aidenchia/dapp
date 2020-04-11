@@ -93,6 +93,8 @@ contract SocialNetwork {
 		balances[_to] += _amount;
 	}
 
+	event PostCreated(uint id, string content, uint likes, address payable author);
+
 	function createPost(string memory _content) public {
 		// Require content to be longer than 0 bytes and shorter than 560 bytes
 		require(bytes(_content).length > 0 && bytes(_content).length < 560);
@@ -105,6 +107,9 @@ contract SocialNetwork {
 
 		// Check if it's a quote
 		newQuote(_content);
+
+		// Emit post
+		emit PostCreated(numPosts, _content, 0, msg.sender);
 	}
 
 	function random(uint max) internal returns (uint) {
@@ -115,9 +120,9 @@ contract SocialNetwork {
 			max ++;
 		}
 
-		uint random = uint(keccak256(abi.encodePacked(now, msg.sender, nonce)))%max + 1;
+		uint _random = uint(keccak256(abi.encodePacked(now, msg.sender, nonce)))%max + 1;
 		nonce ++;
-		return random;
+		return _random;
 	}
 
 	event FailedBid(uint _newBid, uint bid);
@@ -127,7 +132,7 @@ contract SocialNetwork {
 		if (slice.startsWith("BID:".toSlice())) {
 			
 			// Use imported strings library to help with string util functions
-			strings.slice memory _ = slice.split(":".toSlice());
+			slice.split(":".toSlice());
 			string memory order = slice.toString();
 			
 			// Convert string to uint so we can compare it to market bid
@@ -174,7 +179,7 @@ contract SocialNetwork {
 			offerSize ++;
 
 			// Use imported strings library to help with string util functons
-			strings.slice memory _ = slice.split(":".toSlice());
+			slice.split(":".toSlice());
 			string memory order = slice.toString();
 
 			// Convert string to uint
@@ -192,7 +197,8 @@ contract SocialNetwork {
 		}
 	}
 
-	function stringToUint(string memory s) internal returns (uint result) {
+	// pure function won't even read the storage state
+	function stringToUint(string memory s) internal pure returns (uint result) {
 		bytes memory b = bytes(s);
 		uint i;
 		result = 0;
@@ -206,12 +212,16 @@ contract SocialNetwork {
 		return result;
 	}
 
+	event LikePost(uint id, uint numLikes);
+
 	function likePost(uint _id) public {
 		// Require id to be greater than 0 and smaller than num posts
 		require(_id > 0 && _id <= numPosts);
 
 		// Increment the number of likes
 		posts[_id].likes ++;
+
+		emit LikePost(_id, posts[_id].likes);
 	}
 
 	function rewardPost(uint _id) public payable {
