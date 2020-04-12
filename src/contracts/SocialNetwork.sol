@@ -194,7 +194,7 @@ contract SocialNetwork {
 		// Require id to be greater than 0 and smaller than num posts
 		require(_id > 0 && _id <= numPosts);
 
-		// Require sufficient balance
+		// Require sufficient balancelogo.png
 
 		// Get post
 		Post memory _post = posts[_id];
