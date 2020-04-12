@@ -60,9 +60,7 @@ class App extends Component {
           posts: [...this.state.posts, post] // ES6 allows us to add an element to array with spread operator
         })
       }
-
-
-
+      this.setState({loading: false})
     } else {
       window.alert('Social Network contract has not been deployed to detected network')
     }
@@ -76,7 +74,8 @@ class App extends Component {
       account: '',
       socialNetwork: null,
       numPosts: 0,
-      posts: []
+      posts: [],
+      loading: true
     }
   }
 
@@ -85,7 +84,9 @@ class App extends Component {
     return (
       <div>
       <Navbar account={this.state.account}/>
-      <Main posts={this.state.posts}/>
+      {this.state.loading 
+        ? <div id='loader' className="text-center mt-5" ><p>Loading...</p></div>
+        : <Main posts={this.state.posts}/>}
       </div>
     );
   }
