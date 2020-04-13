@@ -173,12 +173,23 @@ contract("SocialNetwork", function(accounts) {
 			// Get the current market bid
 			bid = await contract.bid();
 
+			// Get current queue length and convert to BN for later comparison
+			let oldQueueLength = await contract.queueLength();
+			oldQueueLength = new web3.utils.BN(oldQueueLength);
+
 			// Make the offer at current market bid
 			await contract.createPost("OFFER:".concat(bid.toString()), {from: accounts[4]});
 
-			// Get the new offer from the offer queue to verify it has been appended
-			newOffer = await contract.offerQueue(accounts[4]);
+			// Get new queue length and check it has incremented by 1
+			let newQueueLength = await contract.queueLength();
+			newQueueLength = new web3.utils.BN(newQueueLength);
+			let change = newQueueLength.sub(oldQueueLength);
+			assert.equal(change, 1);			
 
+			// Get the new offer from the offer queue to verify it has been appended
+			newOffer = await contract.offerQueue(newQueueLength);
+
+			// Check that the outstanding offer in the queue is equal to the current market bid
 			assert.equal(newOffer.toString(), bid.toString());
 		})
 
@@ -187,8 +198,8 @@ contract("SocialNetwork", function(accounts) {
 			let oldMarketMaker = await contract.marketMaker();
 			let oldBid = await contract.bid();
 
-			// clear the offer
-			await contract.clearOffer(accounts[4], {from: oldMarketMaker, value: oldBid});
+			// clear the outstanding offer in queue
+			await contract.clearOffer(1, {from: oldMarketMaker, value: oldBid});
 
 			// get new market maker and check
 			let newMarketMaker = await contract.marketMaker();
@@ -196,13 +207,11 @@ contract("SocialNetwork", function(accounts) {
 
 			// get new bid and check
 			let newBid = await contract.bid();
-			assert.notEqual(oldBid.toString(), newBid.toString(), "offer at bid must have reduced the bid");
+			assert.notEqual(oldBid.toString(), newBid.toString(), "offer at bid must have reduced the market bid");
 
 			// check that the queue is now empty
-			check = await contract.offerQueue(accounts[4]);
+			check = await contract.offerQueue(1);
 			assert.equal(check, 0);
-
-
 		})
 	})
 })

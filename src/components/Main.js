@@ -43,7 +43,7 @@ class Main extends Component {
                 <p>Market Maker:</p>
                 <small className="text-muted">
                   {this.props.marketMaker.toString()}
-                </small>
+                </small>    
                 <p>&nbsp;</p>
                 <form onSubmit={(event) => {
                   event.preventDefault()

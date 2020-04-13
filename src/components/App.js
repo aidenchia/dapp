@@ -49,12 +49,12 @@ class App extends Component {
       const socialNetwork = web3.eth.Contract(SocialNetwork.abi, networkData.address)
       this.setState({socialNetwork})
 
-      // get market bid, offer, and market maker
-      const bid = await socialNetwork.methods.bid().call()
+      // get market bid, offer, market maker, offer queue
+      var bid = await socialNetwork.methods.bid().call()
       this.setState({bid})
-      const offer = await socialNetwork.methods.offer().call()
+      var offer = await socialNetwork.methods.offer().call()
       this.setState({offer})
-      const marketMaker = await socialNetwork.methods.marketMaker().call()
+      var marketMaker = await socialNetwork.methods.marketMaker().call()
       this.setState({marketMaker})
 
       
@@ -127,6 +127,7 @@ class App extends Component {
       bid: 10,
       offer: 20,
       marketMaker: null,
+      offerQueue: [],
       posts: [],
       loading: true
     }
