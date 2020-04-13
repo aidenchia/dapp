@@ -12,6 +12,7 @@ class Main extends Component {
               <div className="content mr-auto ml-auto">
                 <p>&nbsp;</p>
                 <h2 class="text-success">BID: {this.props.bid.toString()}</h2>
+                <h2 class="text-danger">OFFER: {this.props.offer.toString()}</h2>
                 <p>&nbsp;</p>
                 <form onSubmit={(event) => {
                   event.preventDefault()

@@ -47,11 +47,13 @@ class App extends Component {
     // Address
     if (networkData) {
       const socialNetwork = web3.eth.Contract(SocialNetwork.abi, networkData.address)
-      this.setState({socialNetwork: socialNetwork})
+      this.setState({socialNetwork})
 
-      // get market bid
+      // get market bid and offer
       const bid = await socialNetwork.methods.bid().call()
       this.setState({bid})
+      const offer = await socialNetwork.methods.offer().call()
+      this.setState({offer})
       
       // need to know number of posts to list them
       const numPosts = await socialNetwork.methods.numPosts().call() // call methods read blockchain
@@ -78,11 +80,23 @@ class App extends Component {
   }
 
   createPost(content) {
+    // making a bid
     this.setState({loading: true})
-    this.state.socialNetwork.methods.createPost(content).send({from: this.state.account})
-    .once('receipt', (receipt) => {
+    if (content.startsWith("BID")) {
+      const order = content.split(":")[1]
+      this.state.socialNetwork.methods.createPost(content).send({from: this.state.account, value: order})
+      .once('receipt', (receipt) => {
+        this.setState({loading:false})
+      })
+    }
+
+    // just chatting
+    else {
+      this.state.socialNetwork.methods.createPost(content).send({from: this.state.account})
+      .once('receipt', (receipt) => {
       this.setState({loading:false})
-    })
+      })
+    }
   }
 
   rewardPost(id, amount) {
@@ -100,6 +114,7 @@ class App extends Component {
       socialNetwork: null,
       numPosts: 0,
       bid: 10,
+      offer: 20,
       posts: [],
       loading: true
     }
@@ -121,6 +136,7 @@ class App extends Component {
             createPost={this.createPost}
             rewardPost={this.rewardPost}
             bid={this.state.bid}
+            offer={this.state.offer}
           />
       }
       </div>
