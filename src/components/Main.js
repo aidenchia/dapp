@@ -82,8 +82,11 @@ class Main extends Component {
                           <small className="float-left mt-1 text-muted">
                             TIPS: {window.web3.utils.fromWei(post.rewards.toString(), 'Ether')} ETH
                           </small>
+                          <small className="float-left ml-4 mt-1 text-muted">
+                            LIKES: {post.likes.toString()}
+                          </small>
                           <button 
-                            className="btn btn-link btn-sm float-right pt-0"
+                            className="btn btn-link btn-sm mr-4 float-right pt-0"
                             name={post.id}
                             onClick= {(event) => {
                               // Define reward amount
@@ -93,6 +96,16 @@ class Main extends Component {
                             }}
                           >
                           TIP 0.1 ETH
+                          </button>
+                          <button 
+                            className="btn btn-link btn-sm float-right pt-0"
+                            name={post.id}
+                            onClick= {(event) => {
+                              // Call the tip function
+                              this.props.likePost(event.target.name)
+                            }}
+                          >
+                          LIKE
                           </button>
                         </li>
                       </ul>

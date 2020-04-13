@@ -110,6 +110,14 @@ class App extends Component {
     })
   }
 
+  likePost(id) {
+    this.setState({loading:true})
+    this.state.socialNetwork.methods.likePost(id).send({from: this.state.account})
+    .once('receipt', (receipt) => {
+      this.setState({loading:false})
+    })
+  }
+
   constructor(props) {
     super(props) 
     this.state = {
@@ -126,6 +134,7 @@ class App extends Component {
     // bind to constructor
     this.createPost = this.createPost.bind(this)
     this.rewardPost = this.rewardPost.bind(this)
+    this.likePost = this.likePost.bind(this)
   }
 
 
@@ -139,6 +148,7 @@ class App extends Component {
             posts={this.state.posts}
             createPost={this.createPost}
             rewardPost={this.rewardPost}
+            likePost={this.likePost}
             bid={this.state.bid}
             offer={this.state.offer}
             marketMaker={this.state.marketMaker}
