@@ -11,8 +11,8 @@ class Main extends Component {
             <main role="main" className="col-lg-12 ml-auto mr-auto" style={{maxWidth: '500px'}}>
               <div className="content mr-auto ml-auto">
                 <p>&nbsp;</p>
-                <h3 class="text-center font-weight-bold"> Welcome to the Agora!</h3>
-                <img src="agora.jpg" class="img-fluid" alt="Responsive image"/>
+                <h3 className="text-center font-weight-bold"> Welcome to the Agora!</h3>
+                <img src="agora.jpg" className="img-fluid" alt="Responsive image"/>
                 <p>&nbsp;</p>
                 <small className= "text-muted mb-2 d-flex text-justify"> 
                   The name Agora literally means “gathering place” and 
@@ -23,15 +23,15 @@ class Main extends Component {
                   The current market bid and offer is shown below:
                 </small>
                 <p>&nbsp;</p>
-                <div class="container">
-                  <div class="row">
-                    <div class="col-sm text-success">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-sm text-success">
                       <h4 className="text-left">BID: {this.props.bid.toString()} Wei</h4>
                       <small className="text-muted">
                         To make an offer of {this.props.bid.toString()} Wei, post OFFER:{this.props.bid.toString()}
                       </small>
                     </div>
-                    <div class="col-sm text-danger">
+                    <div className="col-sm text-danger">
                       <h4>OFFER: {this.props.offer.toString()} Wei</h4>
                       <small className="text-muted">
                         To make a bid of {this.props.offer.toString()} Wei, post BID:{this.props.offer.toString()}
@@ -85,6 +85,16 @@ class Main extends Component {
                           <small className="float-left ml-4 mt-1 text-muted">
                             LIKES: {post.likes.toString()}
                           </small>
+                           <button 
+                            className="btn btn-link btn-sm float-right pt-0"
+                            name={post.id}
+                            onClick= {(e) => {
+                              // Call the like function
+                              this.props.likePost(e.currentTarget.name)
+                            }}
+                          >
+                          <img src="heart.png" alt="LIKE" height="20" width="20"/>
+                          </button>                         
                           <button 
                             className="btn btn-link btn-sm mr-4 float-right pt-0"
                             name={post.id}
@@ -92,20 +102,10 @@ class Main extends Component {
                               // Define reward amount
                               let amount = window.web3.utils.toWei('0.1', 'Ether')
                               // Call the tip function
-                              this.props.rewardPost(event.target.name, amount)
+                              this.props.rewardPost(event.currentTarget.name, amount)
                             }}
                           >
                           TIP 0.1 ETH
-                          </button>
-                          <button 
-                            className="btn btn-link btn-sm float-right pt-0"
-                            name={post.id}
-                            onClick= {(event) => {
-                              // Call the tip function
-                              this.props.likePost(event.target.name)
-                            }}
-                          >
-                          LIKE
                           </button>
                         </li>
                       </ul>
