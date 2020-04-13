@@ -72,7 +72,14 @@ class App extends Component {
     .once('receipt', (receipt) => {
       this.setState({loading:false})
     })
+  }
 
+  rewardPost(id, amount) {
+    this.setState({loading: true})
+    this.state.socialNetwork.methods.rewardPost(id).send({from: this.state.account, value: amount})
+    .once('receipt', (receipt) => {
+      this.setState({loading:false})
+    })
   }
 
   constructor(props) {
@@ -87,6 +94,7 @@ class App extends Component {
 
     // bind to constructor
     this.createPost = this.createPost.bind(this)
+    this.rewardPost = this.rewardPost.bind(this)
   }
 
 
@@ -99,6 +107,7 @@ class App extends Component {
         : <Main 
             posts={this.state.posts}
             createPost={this.createPost}
+            rewardPost={this.rewardPost}
           />
       }
       </div>
