@@ -64,8 +64,15 @@ class App extends Component {
     } else {
       window.alert('Social Network contract has not been deployed to detected network')
     }
+  }
 
-    // ABI
+  createPost(content) {
+    this.setState({loading: true})
+    this.state.socialNetwork.methods.createPost(content).send({from: this.state.account})
+    .once('receipt', (receipt) => {
+      this.setState({loading:false})
+    })
+
   }
 
   constructor(props) {
@@ -77,6 +84,9 @@ class App extends Component {
       posts: [],
       loading: true
     }
+
+    // bind to constructor
+    this.createPost = this.createPost.bind(this)
   }
 
 
@@ -84,9 +94,13 @@ class App extends Component {
     return (
       <div>
       <Navbar account={this.state.account}/>
-      {this.state.loading 
+      { this.state.loading 
         ? <div id='loader' className="text-center mt-5" ><p>Loading...</p></div>
-        : <Main posts={this.state.posts}/>}
+        : <Main 
+            posts={this.state.posts}
+            createPost={this.createPost}
+          />
+      }
       </div>
     );
   }
