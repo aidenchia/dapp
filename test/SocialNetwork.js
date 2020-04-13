@@ -34,8 +34,8 @@ contract("SocialNetwork", function(accounts) {
 			const name = await contract.name();
 			assert.equal(name, "Agora");
 			assert.equal(numPosts, 0);
-			assert.equal(bid, web3.utils.toWei('2', 'Wei'));
-			assert.equal(offer, web3.utils.toWei('5', 'Wei'));
+			assert.equal(bid, web3.utils.toWei('10', 'Wei'));
+			assert.equal(offer, web3.utils.toWei('20', 'Wei'));
 			assert.equal(marketMaker, accounts[0])
 		});
 	});
@@ -61,7 +61,7 @@ contract("SocialNetwork", function(accounts) {
 			assert.equal(post.id.toNumber(), numPosts.toNumber(), "id of latest post should equal numPosts");
 			assert.equal(post.content, "first post", "content of post should be equal to _content argument");
 			assert.equal(post.likes.toNumber(), 0, "no. of likes should be init as zero");
-			assert.equal(post.author, accounts[0], "address of author should equal msg.sender");
+			assert.equal(post.author, accounts[0], "address of author should equal msg.newReceiverBalance");
 		})
 
 		it("created post event emitted correctly", async () => {
@@ -69,7 +69,7 @@ contract("SocialNetwork", function(accounts) {
 			assert.equal(event.id.toNumber(), numPosts.toNumber(), 'id of latest post should equal numPosts');
 			assert.equal(event.content, "first post", "content of post should be equal to _content argument");
 			assert.equal(event.likes.toNumber(), 0, "no. of likes should be init as zero");
-			assert.equal(event.author, accounts[0], "address of author should equal msg.sender");
+			assert.equal(event.author, accounts[0], "address of author should equal msg.newReceiverBalance");
 		});
 
 		it("like post increments likes of post by 1", async () => {
@@ -123,25 +123,38 @@ contract("SocialNetwork", function(accounts) {
 
 	describe("quotes", async() => {
 
-		it("bid at offer should result in transfer of Ether", async() => {
-			// Get current balance
-			let oldAuthorBalance = await web3.eth.getBalance(accounts[0]);
-			oldAuthorBalance = new web3.utils.BN(oldAuthorBalance);
+		it("bid at offer should result in successful transaction", async() => {
+			// Get current values
+			let oldReceiverBalance = await web3.eth.getBalance(accounts[0]);
+			let oldMarketMaker = await contract.marketMaker();
+			let oldOffer = await contract.offer();
 			
-			// Define newBid at offer
-			let newBid = web3.utils.toWei("5", "Wei")
+			// Define a new bid at the current offer price of 20
+			let newBid = web3.utils.toWei("20", "Wei")
 
-			// Make a bid of 5 when current offer is 5
-			await contract.createPost("BID:5", {from: accounts[1], value: newBid})
+			// Make a bid of 20, must be a successful bid since it equals offer
+			await contract.createPost("BID:20", {from: accounts[1], value: newBid})
 
-			// Check new balance
-			let newAuthorBalance = await web3.eth.getBalance(accounts[0]);
-			newAuthorBalance = new web3.utils.BN(newAuthorBalance);
+			// Check new values
+			let newReceiverBalance = await web3.eth.getBalance(accounts[0]);
+			let newMarketMaker = await contract.marketMaker();
+			let newOffer = await contract.offer();
 
-			// Convert to BN type to add to oldAuthorBalance
-			newBid = new web3.utils.BN(newBid)
-			const expectedBalance = oldAuthorBalance.add(newBid);
-			assert.equal(newAuthorBalance.toString(),expectedBalance.toString());
+			// Convert all variables to BN type for addition
+			newBid = new web3.utils.BN(newBid);
+			oldReceiverBalance = new web3.utils.BN(oldReceiverBalance);
+			newReceiverBalance = new web3.utils.BN(newReceiverBalance);
+
+			// Assert receiver's balance has increased by the amount of bid
+			const expectedBalance = oldReceiverBalance.add(newBid);
+			assert.equal(newReceiverBalance.toString(),expectedBalance.toString());
+
+			// Assert that market maker has been reset
+			assert.notEqual(oldMarketMaker, newMarketMaker, "Market maker should change after successful bid");
+			assert.equal(newMarketMaker, accounts[1]);
+
+			// Assert that offer price has changed
+			assert.notEqual(oldOffer, newOffer);
 		})
 
 		it("bid below current market bid should emit failed bid", async() => {
@@ -159,30 +172,5 @@ contract("SocialNetwork", function(accounts) {
 
 
 	})
-
-	/*
-
-	it("should allocate drachma to account that calls workForDrachma", function() {
-		return SocialNetwork.deployed().then(function(instance) {
-			contract = instance;
-			return contract.workForDrachma({from: accounts[1]});
-		}).then(function() {
-			return contract.balances(accounts[1]);
-		}).then(function(balance) {
-			assert.equal(balance, workPay);
-		});
-	});
-
-	it("should have transaction if bid is equal to offer", function() {
-		return SocialNetwork.deployed().then(function(instance) {
-			contract = instance;
-			return contract.createPost("BID:20", {from:accounts[1]});
-		}).then(function() {
-			return contract.balances(accounts[1]);
-		}).then(function(balance) {
-			assert.equal(balance, workPay - 20);
-		});
-	});
-	*/
 })
 
