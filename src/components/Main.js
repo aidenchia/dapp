@@ -11,6 +11,8 @@ class Main extends Component {
             <main role="main" className="col-lg-12 ml-auto mr-auto" style={{maxWidth: '500px'}}>
               <div className="content mr-auto ml-auto">
                 <p>&nbsp;</p>
+                <h2 class="text-success">BID: {this.props.bid.toString()}</h2>
+                <p>&nbsp;</p>
                 <form onSubmit={(event) => {
                   event.preventDefault()
                   const content = this.postContent.value

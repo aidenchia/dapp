@@ -154,7 +154,7 @@ contract("SocialNetwork", function(accounts) {
 			assert.equal(newMarketMaker, accounts[1]);
 
 			// Assert that offer price has changed
-			assert.notEqual(oldOffer, newOffer);
+			assert.notEqual(oldOffer, newOffer, "Offer price must change if bid at offer");
 		})
 
 		it("bid below current market bid should emit failed bid", async() => {
@@ -168,8 +168,6 @@ contract("SocialNetwork", function(accounts) {
 			// assert event failedbid emitted correctly
 			assert.equal(event.remarks, "Bid is below current market bid")
 		})
-
-
 
 	})
 })

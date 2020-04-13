@@ -37,7 +37,7 @@ class App extends Component {
     // load accounts with web3
     const accounts = await web3.eth.getAccounts()
 
-    // set to state
+    // set default account to state
     this.setState({account: accounts[0]})
 
     // Network ID 
@@ -48,6 +48,10 @@ class App extends Component {
     if (networkData) {
       const socialNetwork = web3.eth.Contract(SocialNetwork.abi, networkData.address)
       this.setState({socialNetwork: socialNetwork})
+
+      // get market bid
+      const bid = await socialNetwork.methods.bid().call()
+      this.setState({bid})
       
       // need to know number of posts to list them
       const numPosts = await socialNetwork.methods.numPosts().call() // call methods read blockchain
@@ -67,6 +71,7 @@ class App extends Component {
       })
 
       this.setState({loading: false})
+
     } else {
       window.alert('Social Network contract has not been deployed to detected network')
     }
@@ -94,6 +99,7 @@ class App extends Component {
       account: '',
       socialNetwork: null,
       numPosts: 0,
+      bid: 10,
       posts: [],
       loading: true
     }
@@ -114,6 +120,7 @@ class App extends Component {
             posts={this.state.posts}
             createPost={this.createPost}
             rewardPost={this.rewardPost}
+            bid={this.state.bid}
           />
       }
       </div>
