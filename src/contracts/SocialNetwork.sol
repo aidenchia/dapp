@@ -35,8 +35,8 @@ contract SocialNetwork {
 		nonce = 1;
 
 		// default market maker to start with some inventory and drachma
-		workForDrachma(); 
-		buyFromMerchant();
+		//workForDrachma(); 
+		//buyFromMerchant();
 	}
 
 	function buyFromMerchant() public {
@@ -61,7 +61,7 @@ contract SocialNetwork {
 
 	event PostCreated(uint id, string content, uint likes, address payable author);
 
-	function createPost(string memory _content) public {
+	function createPost(string memory _content) public payable {
 		// Require content to be longer than 0 bytes and shorter than 560 bytes
 		require(bytes(_content).length > 0 && bytes(_content).length < 560);
 
@@ -92,6 +92,7 @@ contract SocialNetwork {
 	}
 
 	event FailedBid(uint _newBid, uint bid);
+	event SuccessfulBid(uint _newBid, uint bid);
 
 	function newQuote(string memory _content) public payable {
 		strings.slice memory slice = _content.toSlice();
@@ -103,11 +104,6 @@ contract SocialNetwork {
 			
 			// Convert string to uint so we can compare it to market bid
 			uint newBid = stringToUint(order);
-
-			
-
-			// Require address to have enough balance to make bid
-			//require(balances[msg.sender] >= bid, "Insufficient balance to make bid");
 
 			// All bids should increment bidSize
 			bidSize ++;
@@ -130,17 +126,23 @@ contract SocialNetwork {
 				// Transfer money to current market maker
 				//transferDrachma(msg.sender, marketMaker, newBid);
 				address(marketMaker).transfer(msg.value);
-				require(msg.value >= newBid);
+				require(msg.value >= newBid, "msg.value must be equal to newBid or greater");
 
+				emit SuccessfulBid(newBid, bid);
+				
 				// Update inventory
-				inventories[msg.sender] += 1;
-				inventories[marketMaker] -= 1;
+				//inventories[msg.sender] += 1;
+				//inventories[marketMaker] -= 1;
 
 				// New market maker sets his own bid and offer spread according to PRNG function
 				marketMaker = msg.sender;
 				uint spread = random(10);
 				bid = newBid - spread / 2;
 				offer = newBid + spread / 2;
+			}
+
+			else {
+				emit FailedBid(newBid, bid);
 			}
 		}
 

@@ -8,6 +8,7 @@ contract("SocialNetwork", function(accounts) {
 	var numPosts;
 	var bid;
 	var ask;
+	var marketMaker;
 	const workPay = 50;
 
 	// before hook will run before every test in file
@@ -16,6 +17,7 @@ contract("SocialNetwork", function(accounts) {
 		numPosts = await contract.numPosts();
 		bid = await contract.bid();
 		offer = await contract.offer();
+		marketMaker = await contract.marketMaker();
 	})
 
 
@@ -34,6 +36,7 @@ contract("SocialNetwork", function(accounts) {
 			assert.equal(numPosts, 0);
 			assert.equal(bid, web3.utils.toWei('2', 'Ether'));
 			assert.equal(offer, web3.utils.toWei('5', 'Ether'));
+			assert.equal(marketMaker, accounts[0])
 		});
 	});
 
@@ -120,14 +123,25 @@ contract("SocialNetwork", function(accounts) {
 
 	describe("quotes", async() => {
 
-		it("should be able to quote", async() => {
+		it("bid at offer should result in transfer of Ether", async() => {
+			// Get current balance
 			let oldAuthorBalance = await web3.eth.getBalance(accounts[0]);
 			oldAuthorBalance = new web3.utils.BN(oldAuthorBalance);
 			
+			// Define newBid at offer
+			let newBid = web3.utils.toWei("5", "Ether")
+
 			// Make a bid of 5 when current offer is 5
-			//await contract.createPost("BID:5", {from: accounts[1], value: web3.utils.toWei("5", "Ether")})
+			await contract.createPost("BID:5000000000000000000", {from: accounts[1], value: newBid})
 
+			// Check new balance
+			let newAuthorBalance = await web3.eth.getBalance(accounts[0]);
+			newAuthorBalance = new web3.utils.BN(newAuthorBalance);
 
+			// Convert to BN type to add to oldAuthorBalance
+			newBid = new web3.utils.BN(newBid)
+			const expectedBalance = oldAuthorBalance.add(newBid);
+			assert.equal(newAuthorBalance.toString(),expectedBalance.toString());
 		})
 
 	})
