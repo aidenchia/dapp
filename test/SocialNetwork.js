@@ -169,6 +169,18 @@ contract("SocialNetwork", function(accounts) {
 			assert.equal(event.remarks, "Bid is below current market bid")
 		})
 
+		it("offer at bid should add to offer queue", async() => {
+			// Get the current market bid
+			let bid = await contract.bid();
+
+			// Make the offer at current market bid
+			await contract.createPost("OFFER:".concat(bid.toString()), {from: accounts[4]});
+
+			// Get the latest offer from the offer queue to verify it has been appended
+			newOffer = await contract.offerQueue(accounts[4]);
+
+			await(newOffer, bid);
+		})
 	})
 })
 
