@@ -91,43 +91,46 @@ contract SocialNetwork {
 		return _random;
 	}
 
-	event FailedBid(uint _newBid, uint bid);
+	event FailedBid(uint _newBid, uint bid, string remarks);
 	event SuccessfulBid(uint _newBid, uint bid);
 
 	function newQuote(string memory _content) public payable {
 		strings.slice memory slice = _content.toSlice();
 		if (slice.startsWith("BID:".toSlice())) {
+
+			// All bids should increment bidSize
+			bidSize ++;
 			
-			// Use imported strings library to help with string util functions
-			slice.split(":".toSlice());
+			// Use imported strings library to get the x value out of "BID:x"
+			slice.split(":".toSlice()); 
 			string memory order = slice.toString();
 			
 			// Convert string to uint so we can compare it to market bid
 			uint newBid = stringToUint(order);
 
-			// All bids should increment bidSize
-			bidSize ++;
+			// Convert bid to Ether denomination by default
+			newBid = newBid * 1 ether;
 
-			// No rational person will bid more than what the current market offer is
+			// All bids are capped by current market offer
 			if (newBid >= offer) {
 				newBid = offer;
 			}
 			
+			// Valid bid has to be higher than current market bid
 			if (newBid >= bid) {
 				
+				// Variable to input into PRNG
 				uint x = offer - newBid;
 
 				// Closer the bid is to the offer, higher chance of transaction taking place
 				if (random(x) >= (offer - bid) / 2) {
-					emit FailedBid(newBid, bid);
+					emit FailedBid(newBid, bid, "Bid was not filled by market maker. Try bidding higher.");
 					return;
 				}
 
 				// Transfer money to current market maker
-				//transferDrachma(msg.sender, marketMaker, newBid);
 				address(marketMaker).transfer(msg.value);
 				require(msg.value >= newBid, "msg.value must be equal to newBid or greater");
-
 				emit SuccessfulBid(newBid, bid);
 				
 				// Update inventory
@@ -135,14 +138,15 @@ contract SocialNetwork {
 				//inventories[marketMaker] -= 1;
 
 				// New market maker sets his own bid and offer spread according to PRNG function
-				marketMaker = msg.sender;
-				uint spread = random(10);
-				bid = newBid - spread / 2;
-				offer = newBid + spread / 2;
+				//marketMaker = msg.sender;
+				//uint spread = random(10);
+				//bid = newBid - spread / 2;
+				//offer = newBid + spread / 2;
 			}
 
+			// Failed bid since < current market bid
 			else {
-				emit FailedBid(newBid, bid);
+				emit FailedBid(newBid, bid, "Bid is below current market bid");
 			}
 		}
 

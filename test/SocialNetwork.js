@@ -132,7 +132,7 @@ contract("SocialNetwork", function(accounts) {
 			let newBid = web3.utils.toWei("5", "Ether")
 
 			// Make a bid of 5 when current offer is 5
-			await contract.createPost("BID:5000000000000000000", {from: accounts[1], value: newBid})
+			await contract.createPost("BID:5", {from: accounts[1], value: newBid})
 
 			// Check new balance
 			let newAuthorBalance = await web3.eth.getBalance(accounts[0]);
@@ -143,6 +143,8 @@ contract("SocialNetwork", function(accounts) {
 			const expectedBalance = oldAuthorBalance.add(newBid);
 			assert.equal(newAuthorBalance.toString(),expectedBalance.toString());
 		})
+
+
 
 	})
 
