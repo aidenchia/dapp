@@ -49,11 +49,14 @@ class App extends Component {
       const socialNetwork = web3.eth.Contract(SocialNetwork.abi, networkData.address)
       this.setState({socialNetwork})
 
-      // get market bid and offer
+      // get market bid, offer, and market maker
       const bid = await socialNetwork.methods.bid().call()
       this.setState({bid})
       const offer = await socialNetwork.methods.offer().call()
       this.setState({offer})
+      const marketMaker = await socialNetwork.methods.marketMaker().call()
+      this.setState({marketMaker})
+
       
       // need to know number of posts to list them
       const numPosts = await socialNetwork.methods.numPosts().call() // call methods read blockchain
@@ -115,6 +118,7 @@ class App extends Component {
       numPosts: 0,
       bid: 10,
       offer: 20,
+      marketMaker: null,
       posts: [],
       loading: true
     }
@@ -131,12 +135,13 @@ class App extends Component {
       <Navbar account={this.state.account}/>
       { this.state.loading 
         ? <div id='loader' className="text-center mt-5" ><p>Loading...</p></div>
-        : <Main 
+        :<Main 
             posts={this.state.posts}
             createPost={this.createPost}
             rewardPost={this.rewardPost}
             bid={this.state.bid}
             offer={this.state.offer}
+            marketMaker={this.state.marketMaker}
           />
       }
       </div>

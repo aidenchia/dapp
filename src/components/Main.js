@@ -12,6 +12,8 @@ class Main extends Component {
               <div className="content mr-auto ml-auto">
                 <p>&nbsp;</p>
                 <h3 class="text-center font-weight-bold"> Welcome to the Agora!</h3>
+                <img src="agora.jpg" class="img-fluid" alt="Responsive image"/>
+                <p>&nbsp;</p>
                 <small className= "text-muted mb-2 d-flex text-justify"> 
                   The name Agora literally means “gathering place” and 
                   refers to the public spaces in ancient Greek city-states 
@@ -24,19 +26,24 @@ class Main extends Component {
                 <div class="container">
                   <div class="row">
                     <div class="col-sm text-success">
-                      <h4 className="text-left">BID: {this.props.bid.toString()}</h4>
+                      <h4 className="text-left">BID: {this.props.bid.toString()} Wei</h4>
                       <small className="text-muted">
-                        To make a bid of 10 Wei, post BID:10
+                        To make an offer of {this.props.bid.toString()} Wei, post OFFER:{this.props.bid.toString()}
                       </small>
                     </div>
                     <div class="col-sm text-danger">
-                      <h4>OFFER: {this.props.offer.toString()}</h4>
+                      <h4>OFFER: {this.props.offer.toString()} Wei</h4>
                       <small className="text-muted">
-                        To make an offer of 20 Wei, post OFFER:20
+                        To make a bid of {this.props.offer.toString()} Wei, post BID:{this.props.offer.toString()}
                       </small>
                     </div>
                   </div>
                 </div>
+                <p>&nbsp;</p>
+                <p>Market Maker:</p>
+                <small className="text-muted">
+                  {this.props.marketMaker.toString()}
+                </small>
                 <p>&nbsp;</p>
                 <form onSubmit={(event) => {
                   event.preventDefault()
