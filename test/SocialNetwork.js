@@ -154,7 +154,7 @@ contract("SocialNetwork", function(accounts) {
 			assert.equal(newMarketMaker, accounts[1]);
 
 			// Assert that offer price has changed
-			assert.notEqual(oldOffer, newOffer, "Offer price must change if bid at offer");
+			assert.notEqual(oldOffer.toString(), newOffer.toString(), "Offer price must change if bid at offer");
 		})
 
 		it("bid below current market bid should emit failed bid", async() => {
@@ -180,6 +180,29 @@ contract("SocialNetwork", function(accounts) {
 			newOffer = await contract.offerQueue(accounts[4]);
 
 			assert.equal(newOffer.toString(), bid.toString());
+		})
+
+		it("clearing offer should reset market maker and queue should be empty", async() => {
+			// get old market maker and bid
+			let oldMarketMaker = await contract.marketMaker();
+			let oldBid = await contract.bid();
+
+			// clear the offer
+			await contract.clearOffer(accounts[4], {from: oldMarketMaker, value: oldBid});
+
+			// get new market maker and check
+			let newMarketMaker = await contract.marketMaker();
+			assert.notEqual(oldMarketMaker, newMarketMaker);
+
+			// get new bid and check
+			let newBid = await contract.bid();
+			assert.notEqual(oldBid.toString(), newBid.toString(), "offer at bid must have reduced the bid");
+
+			// check that the queue is now empty
+			check = await contract.offerQueue(accounts[4]);
+			assert.equal(check, 0);
+
+
 		})
 	})
 })

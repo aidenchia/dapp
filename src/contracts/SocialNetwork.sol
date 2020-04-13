@@ -156,19 +156,14 @@ contract SocialNetwork {
 
 				// Add to offer queue
 				offerQueue[msg.sender] = newOffer;
-				emit Debug(msg.sender, offerQueue[msg.sender]);
-
 			}
 
 			// Failed offer since > current market offer
 			else {
 				emit FailedTxn(newOffer, bid, offer, "Offer is above current market offer");
 			}
-
 		}
 	}
-
-	event Debug(address add, uint offer);
 
 	function clearOffer(address payable seller) public payable {
 		// Get the offer in the queue
