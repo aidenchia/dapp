@@ -53,13 +53,19 @@ class App extends Component {
       const numPosts = await socialNetwork.methods.numPosts().call() // call methods read blockchain
       this.setState({numPosts})
 
-      // set state of all posts
+      // Load posts
       for (var i = 1; i <= numPosts; i++) {
         const post = await socialNetwork.methods.posts(i).call()
         this.setState({
           posts: [...this.state.posts, post] // ES6 allows us to add an element to array with spread operator
         })
       }
+
+      // Sort posts
+      this.setState({
+        posts: this.state.posts.sort((a,b) => b.rewards - a.rewards)
+      })
+
       this.setState({loading: false})
     } else {
       window.alert('Social Network contract has not been deployed to detected network')
