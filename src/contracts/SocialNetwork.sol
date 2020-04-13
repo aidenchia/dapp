@@ -16,7 +16,6 @@ contract SocialNetwork {
 	address payable public marketMaker;
 	mapping(uint => Post) public posts;
 	mapping(address => uint) public balances;
-	mapping(address => uint) public inventories;
 
 	struct Post {
 		uint id;
@@ -33,30 +32,6 @@ contract SocialNetwork {
 		marketMaker = msg.sender;
 		merchantPrice = 4 ether;
 		nonce = 1;
-
-		// default market maker to start with some inventory and drachma
-		//workForDrachma(); 
-		//buyFromMerchant();
-	}
-
-	function buyFromMerchant() public {
-		//require(balances[msg.sender] >= merchantPrice, "Insufficient balance to buy direct from merchant");
-		balances[msg.sender] -= merchantPrice;
-		inventories[msg.sender] += 1;
-	}
-
-
-	function workForDrachma() public {
-		// Increases balance of address
-		balances[msg.sender] += 50;
-	}
-
-	function transferDrachma(address _from, address _to, uint _amount) public {
-		// Require sufficient drachma before trf can take place
-		require(_amount <= balances[_from]);
-
-		balances[_from] -= _amount;
-		balances[_to] += _amount;
 	}
 
 	event PostCreated(uint id, string content, uint likes, address payable author);
@@ -132,10 +107,6 @@ contract SocialNetwork {
 				address(marketMaker).transfer(msg.value);
 				require(msg.value >= newBid, "msg.value must be equal to newBid or greater");
 				emit SuccessfulBid(newBid, bid);
-				
-				// Update inventory
-				//inventories[msg.sender] += 1;
-				//inventories[marketMaker] -= 1;
 
 				// New market maker sets his own bid and offer spread according to PRNG function
 				//marketMaker = msg.sender;
