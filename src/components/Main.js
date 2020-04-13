@@ -11,8 +11,32 @@ class Main extends Component {
             <main role="main" className="col-lg-12 ml-auto mr-auto" style={{maxWidth: '500px'}}>
               <div className="content mr-auto ml-auto">
                 <p>&nbsp;</p>
-                <h2 class="text-success">BID: {this.props.bid.toString()}</h2>
-                <h2 class="text-danger">OFFER: {this.props.offer.toString()}</h2>
+                <h3 class="text-center font-weight-bold"> Welcome to the Agora!</h3>
+                <small className= "text-muted mb-2 d-flex text-justify"> 
+                  The name Agora literally means “gathering place” and 
+                  refers to the public spaces in ancient Greek city-states 
+                  where people used to gather freely to chat and trade items with one another 
+                  in a completely decentralized manner.
+                  Chat with others or make bids and offers to trade items with others.
+                  The current market bid and offer is shown below:
+                </small>
+                <p>&nbsp;</p>
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm text-success">
+                      <h4 className="text-left">BID: {this.props.bid.toString()}</h4>
+                      <small className="text-muted">
+                        To make a bid of 10 Wei, post BID:10
+                      </small>
+                    </div>
+                    <div class="col-sm text-danger">
+                      <h4>OFFER: {this.props.offer.toString()}</h4>
+                      <small className="text-muted">
+                        To make an offer of 20 Wei, post OFFER:20
+                      </small>
+                    </div>
+                  </div>
+                </div>
                 <p>&nbsp;</p>
                 <form onSubmit={(event) => {
                   event.preventDefault()
@@ -28,7 +52,7 @@ class Main extends Component {
                       placeholder="What's on your mind?"
                       required />
                    </div>
-                   <button type="submit" className="btn btn-primary btn-block">Share</button>
+                   <button type="submit" className="btn btn-primary btn-block">Post</button>
                   </form>
                   <p>&nbsp;</p>
                 { this.props.posts.map((post,key) => {
