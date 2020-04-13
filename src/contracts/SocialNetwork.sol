@@ -27,10 +27,10 @@ contract SocialNetwork {
 
 	constructor() public {
 		name = "Agora";
-		bid = 2 ether;
-		offer = 5 ether;
+		bid = 2 wei;
+		offer = 5 wei;
 		marketMaker = msg.sender;
-		merchantPrice = 4 ether;
+		merchantPrice = 4 wei;
 		nonce = 1;
 	}
 
@@ -54,19 +54,19 @@ contract SocialNetwork {
 	}
 
 	function random(uint max) internal returns (uint) {
-		// Pseudo randomly generate number from 1 to max
+		// Pseudo randomly generate number from 0 to max
 
 		// Prevent modulo by zero error
 		if (max == 0) {
 			max ++;
 		}
 
-		uint _random = uint(keccak256(abi.encodePacked(now, msg.sender, nonce)))%max + 1;
+		uint _random = uint(keccak256(abi.encodePacked(now, msg.sender, nonce)))%max;
 		nonce ++;
 		return _random;
 	}
 
-	event FailedBid(uint _newBid, uint bid, string remarks);
+	event FailedBid(uint _newBid, uint bid, uint offer, string remarks);
 	event SuccessfulBid(uint _newBid, uint bid);
 
 	function newQuote(string memory _content) public payable {
@@ -83,8 +83,8 @@ contract SocialNetwork {
 			// Convert string to uint so we can compare it to market bid
 			uint newBid = stringToUint(order);
 
-			// Convert bid to Ether denomination by default
-			newBid = newBid * 1 ether;
+			// Convert bid to wei denomination by default
+			newBid = newBid * 1 wei;
 
 			// All bids are capped by current market offer
 			if (newBid >= offer) {
@@ -94,12 +94,12 @@ contract SocialNetwork {
 			// Valid bid has to be higher than current market bid
 			if (newBid >= bid) {
 				
-				// Variable to input into PRNG
-				uint x = offer - newBid;
+				// Generate random number
+				uint rnd = random(offer - newBid);
 
 				// Closer the bid is to the offer, higher chance of transaction taking place
-				if (random(x) >= (offer - bid) / 2) {
-					emit FailedBid(newBid, bid, "Bid was not filled by market maker. Try bidding higher.");
+				if (rnd > (offer - bid) / 2) {
+					emit FailedBid(newBid, bid, offer, "Bid was not filled by market maker. Try bidding higher.");
 					return;
 				}
 
@@ -117,7 +117,7 @@ contract SocialNetwork {
 
 			// Failed bid since < current market bid
 			else {
-				emit FailedBid(newBid, bid, "Bid is below current market bid");
+				emit FailedBid(newBid, bid, offer, "Bid is below current market bid");
 			}
 		}
 

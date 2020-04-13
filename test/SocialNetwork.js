@@ -34,8 +34,8 @@ contract("SocialNetwork", function(accounts) {
 			const name = await contract.name();
 			assert.equal(name, "Agora");
 			assert.equal(numPosts, 0);
-			assert.equal(bid, web3.utils.toWei('2', 'Ether'));
-			assert.equal(offer, web3.utils.toWei('5', 'Ether'));
+			assert.equal(bid, web3.utils.toWei('2', 'Wei'));
+			assert.equal(offer, web3.utils.toWei('5', 'Wei'));
 			assert.equal(marketMaker, accounts[0])
 		});
 	});
@@ -109,12 +109,12 @@ contract("SocialNetwork", function(accounts) {
 			let oldAuthorBalance = await web3.eth.getBalance(accounts[0]);
 			oldAuthorBalance = new web3.utils.BN(oldAuthorBalance);
 
-			await contract.rewardPost(1, {from: accounts[1], value: web3.utils.toWei("1", "Ether")});
+			await contract.rewardPost(1, {from: accounts[1], value: web3.utils.toWei("1", "Wei")});
 
 			// Check that author received funds
 			let newAuthorBalance = await web3.eth.getBalance(accounts[0]);
 			newAuthorBalance = new web3.utils.BN(newAuthorBalance);
-			let reward = web3.utils.toWei("1", "Ether");
+			let reward = web3.utils.toWei("1", "Wei");
 			reward = new web3.utils.BN(reward);
 			const expectedBalance = oldAuthorBalance.add(reward);
 			assert.equal(newAuthorBalance.toString(), expectedBalance.toString());
@@ -129,7 +129,7 @@ contract("SocialNetwork", function(accounts) {
 			oldAuthorBalance = new web3.utils.BN(oldAuthorBalance);
 			
 			// Define newBid at offer
-			let newBid = web3.utils.toWei("5", "Ether")
+			let newBid = web3.utils.toWei("5", "Wei")
 
 			// Make a bid of 5 when current offer is 5
 			await contract.createPost("BID:5", {from: accounts[1], value: newBid})
@@ -142,6 +142,18 @@ contract("SocialNetwork", function(accounts) {
 			newBid = new web3.utils.BN(newBid)
 			const expectedBalance = oldAuthorBalance.add(newBid);
 			assert.equal(newAuthorBalance.toString(),expectedBalance.toString());
+		})
+
+		it("bid below current market bid should emit failed bid", async() => {
+			// Define newBid below current bid
+			let newBid = web3.utils.toWei("1", "Wei");
+
+			// get logs
+			let cpResult = await contract.createPost("BID:1", {from: accounts[1], value: newBid})
+			const event = cpResult.logs[0].args;
+
+			// assert event failedbid emitted correctly
+			assert.equal(event.remarks, "Bid is below current market bid")
 		})
 
 
