@@ -32,8 +32,8 @@ contract("SocialNetwork", function(accounts) {
 			const name = await contract.name();
 			assert.equal(name, "Agora");
 			assert.equal(numPosts, 0);
-			assert.equal(bid, 10);
-			assert.equal(offer, 20);
+			assert.equal(bid, web3.utils.toWei('2', 'Ether'));
+			assert.equal(offer, web3.utils.toWei('5', 'Ether'));
 		});
 	});
 
@@ -117,6 +117,20 @@ contract("SocialNetwork", function(accounts) {
 			assert.equal(newAuthorBalance.toString(), expectedBalance.toString());
 		});
 	});
+
+	describe("quotes", async() => {
+
+		it("should be able to quote", async() => {
+			let oldAuthorBalance = await web3.eth.getBalance(accounts[0]);
+			oldAuthorBalance = new web3.utils.BN(oldAuthorBalance);
+			
+			// Make a bid of 5 when current offer is 5
+			//await contract.createPost("BID:5", {from: accounts[1], value: web3.utils.toWei("5", "Ether")})
+
+
+		})
+
+	})
 
 	/*
 

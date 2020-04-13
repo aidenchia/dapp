@@ -28,10 +28,10 @@ contract SocialNetwork {
 
 	constructor() public {
 		name = "Agora";
-		bid = 10;
-		offer = 20;
+		bid = 2 ether;
+		offer = 5 ether;
 		marketMaker = msg.sender;
-		merchantPrice = 15;
+		merchantPrice = 4 ether;
 		nonce = 1;
 
 		// default market maker to start with some inventory and drachma
@@ -40,7 +40,7 @@ contract SocialNetwork {
 	}
 
 	function buyFromMerchant() public {
-		require(balances[msg.sender] >= merchantPrice, "Insufficient balance to buy direct from merchant");
+		//require(balances[msg.sender] >= merchantPrice, "Insufficient balance to buy direct from merchant");
 		balances[msg.sender] -= merchantPrice;
 		inventories[msg.sender] += 1;
 	}
@@ -93,7 +93,7 @@ contract SocialNetwork {
 
 	event FailedBid(uint _newBid, uint bid);
 
-	function newQuote(string memory _content) public {
+	function newQuote(string memory _content) public payable {
 		strings.slice memory slice = _content.toSlice();
 		if (slice.startsWith("BID:".toSlice())) {
 			
@@ -104,8 +104,10 @@ contract SocialNetwork {
 			// Convert string to uint so we can compare it to market bid
 			uint newBid = stringToUint(order);
 
+			
+
 			// Require address to have enough balance to make bid
-			require(balances[msg.sender] >= bid, "Insufficient balance to make bid");
+			//require(balances[msg.sender] >= bid, "Insufficient balance to make bid");
 
 			// All bids should increment bidSize
 			bidSize ++;
@@ -126,7 +128,9 @@ contract SocialNetwork {
 				}
 
 				// Transfer money to current market maker
-				transferDrachma(msg.sender, marketMaker, newBid);
+				//transferDrachma(msg.sender, marketMaker, newBid);
+				address(marketMaker).transfer(msg.value);
+				require(msg.value >= newBid);
 
 				// Update inventory
 				inventories[msg.sender] += 1;
@@ -194,7 +198,7 @@ contract SocialNetwork {
 		// Require id to be greater than 0 and smaller than num posts
 		require(_id > 0 && _id <= numPosts);
 
-		// Require sufficient balancelogo.png
+		// Require sufficient balance
 
 		// Get post
 		Post memory _post = posts[_id];
