@@ -22,8 +22,7 @@ class Main extends Component {
                   Chat with others or make bids and offers to trade items with others.
                   The current market bid and offer is shown below:
                 </small>
-                <p>&nbsp;</p>
-                <div className="container">
+                <div className="container mt-4">
                   <div className="row">
                     <div className="col-sm text-success">
                       <h4 className="text-left">BID: {this.props.bid.toString()} Wei</h4>
@@ -55,6 +54,12 @@ class Main extends Component {
                     </ul>
                   )})  
                 }
+                <form className="mt-4" onSubmit={(e) => {
+                  e.preventDefault()
+                  this.props.clearOffer() 
+                }}>
+                  <button type="submit" className="btn btn-warning btn-block">Clear Offer</button>
+                </form>
                 <p>&nbsp;</p>
                 <form onSubmit={(event) => {
                   event.preventDefault()

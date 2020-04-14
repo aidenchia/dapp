@@ -62,6 +62,8 @@ class App extends Component {
       // load and display the offer queue
       for (var i = 1; i <= queueLength; i++) {
         const waitingOffer = await socialNetwork.methods.offerQueue(i).call()
+        var offerVal = waitingOffer[0].toString()
+        if(offerVal == "0") {continue;}
         this.setState({
           offerQueue: [...this.state.offerQueue, waitingOffer]
         })
@@ -128,6 +130,13 @@ class App extends Component {
     })
   }
 
+  clearOffer() {
+    this.state.socialNetwork.methods.offerQueue(this.state.queueLength).call()
+    .then((waitingOffer)=> {
+      this.state.socialNetwork.methods.clearOffer(this.state.queueLength).send({from: this.state.account, value: waitingOffer[0]})
+    })
+  }
+
   constructor(props) {
     super(props) 
     this.state = {
@@ -147,6 +156,7 @@ class App extends Component {
     this.createPost = this.createPost.bind(this)
     this.rewardPost = this.rewardPost.bind(this)
     this.likePost = this.likePost.bind(this)
+    this.clearOffer = this.clearOffer.bind(this)
   }
 
 
@@ -166,6 +176,7 @@ class App extends Component {
             marketMaker={this.state.marketMaker}
             offerQueue={this.state.offerQueue}
             queueLength={this.state.queueLength}
+            clearOffer={this.clearOffer}
           />
       }
       </div>
