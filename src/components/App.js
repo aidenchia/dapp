@@ -49,15 +49,25 @@ class App extends Component {
       const socialNetwork = web3.eth.Contract(SocialNetwork.abi, networkData.address)
       this.setState({socialNetwork})
 
-      // get market bid, offer, market maker, offer queue
+      // get relevant state variables
       const bid = await socialNetwork.methods.bid().call()
       this.setState({bid})
       const offer = await socialNetwork.methods.offer().call()
       this.setState({offer})
       const marketMaker = await socialNetwork.methods.marketMaker().call()
       this.setState({marketMaker})
-
+      const queueLength = await socialNetwork.methods.queueLength().call()
+      this.setState({queueLength})
       
+      // load and display the offer queue
+      for (var i = 1; i <= queueLength; i++) {
+        const waitingOffer = await socialNetwork.methods.offerQueue(i).call()
+        this.setState({
+          offerQueue: [...this.state.offerQueue, waitingOffer],
+        })
+      }
+
+
       // need to know number of posts to list them
       const numPosts = await socialNetwork.methods.numPosts().call() // call methods read blockchain
       this.setState({numPosts})
@@ -127,6 +137,7 @@ class App extends Component {
       bid: 10,
       offer: 20,
       marketMaker: null,
+      queueLength: 0,
       offerQueue: [],
       posts: [],
       loading: true
@@ -153,6 +164,8 @@ class App extends Component {
             bid={this.state.bid}
             offer={this.state.offer}
             marketMaker={this.state.marketMaker}
+            offerQueue={this.state.offerQueue}
+            queueLength={this.state.queueLength}
           />
       }
       </div>

@@ -45,6 +45,11 @@ class Main extends Component {
                   {this.props.marketMaker.toString()}
                 </small>    
                 <p>&nbsp;</p>
+                <p>Offer Queue:</p>
+                {this.props.posts.map((_post,_key) => {
+                  return(<small className="text-muted">{_post.author}</small>)
+                })}
+                
                 <form onSubmit={(event) => {
                   event.preventDefault()
                   const content = this.postContent.value

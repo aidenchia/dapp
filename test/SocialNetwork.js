@@ -187,7 +187,8 @@ contract("SocialNetwork", function(accounts) {
 			assert.equal(change, 1);			
 
 			// Get the new offer from the offer queue to verify it has been appended
-			newOffer = await contract.offerQueue(newQueueLength);
+			let waitingOffer = await contract.offerQueue(newQueueLength);
+			let newOffer = waitingOffer[0];
 
 			// Check that the outstanding offer in the queue is equal to the current market bid
 			assert.equal(newOffer.toString(), bid.toString());
@@ -210,8 +211,8 @@ contract("SocialNetwork", function(accounts) {
 			assert.notEqual(oldBid.toString(), newBid.toString(), "offer at bid must have reduced the market bid");
 
 			// check that the queue is now empty
-			check = await contract.offerQueue(1);
-			assert.equal(check, 0);
+			let check = await contract.offerQueue(1);
+			assert.equal(check[0], 0);
 		})
 	})
 })
