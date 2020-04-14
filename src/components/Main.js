@@ -3,9 +3,9 @@ import Identicon from 'identicon.js';
 
 class Main extends Component {
 
-	render() {
+  render() {
 
-		return (
+    return (
       <div className="container-fluid mt-5">
           <div className="row">
             <main role="main" className="col-lg-12 ml-auto mr-auto" style={{maxWidth: '500px'}}>
@@ -116,8 +116,8 @@ class Main extends Component {
             </main>
           </div>
         </div>  
-		)
-	}
+    )
+  }
 }
 
 

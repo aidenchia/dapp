@@ -50,11 +50,11 @@ class App extends Component {
       this.setState({socialNetwork})
 
       // get market bid, offer, market maker, offer queue
-      var bid = await socialNetwork.methods.bid().call()
+      const bid = await socialNetwork.methods.bid().call()
       this.setState({bid})
-      var offer = await socialNetwork.methods.offer().call()
+      const offer = await socialNetwork.methods.offer().call()
       this.setState({offer})
-      var marketMaker = await socialNetwork.methods.marketMaker().call()
+      const marketMaker = await socialNetwork.methods.marketMaker().call()
       this.setState({marketMaker})
 
       
