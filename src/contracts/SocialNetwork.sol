@@ -92,7 +92,7 @@ contract SocialNetwork {
 			newBid = newBid * 1 wei;
 
 			// All bids are capped by current market offer
-			if (newBid >= offer) {
+			if (newBid > offer) {
 				newBid = offer;
 			}
 			
@@ -143,7 +143,7 @@ contract SocialNetwork {
 			newOffer = newOffer * 1 wei;
 
 			// All offers must be greater than current market bid
-			if (newOffer >= bid) {
+			if (newOffer < bid) {
 				newOffer = bid;
 			}
 			

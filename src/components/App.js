@@ -63,7 +63,7 @@ class App extends Component {
       for (var i = 1; i <= queueLength; i++) {
         const waitingOffer = await socialNetwork.methods.offerQueue(i).call()
         this.setState({
-          offerQueue: [...this.state.offerQueue, waitingOffer],
+          offerQueue: [...this.state.offerQueue, waitingOffer]
         })
       }
 

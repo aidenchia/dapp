@@ -46,10 +46,16 @@ class Main extends Component {
                 </small>    
                 <p>&nbsp;</p>
                 <p>Offer Queue:</p>
-                {this.props.posts.map((_post,_key) => {
-                  return(<small className="text-muted">{_post.author}</small>)
-                })}
-                
+                {this.props.offerQueue.map((waitingOffer, idx) => {
+                  return(
+                    <ul>
+                      <li key={idx}>
+                        <small className="text-muted">{waitingOffer.offerVal.toString()} Wei: {waitingOffer.offerer}</small>
+                      </li>
+                    </ul>
+                  )})  
+                }
+                <p>&nbsp;</p>
                 <form onSubmit={(event) => {
                   event.preventDefault()
                   const content = this.postContent.value
