@@ -8,7 +8,7 @@ Create Post Function
 ![Data Flow Diagram](https://github.com/aidenchia/dapp/blob/master/public/DFD.png)
 
 
-### Learning Points
+## Learning Points
 
 #### Blockchain / Solidity / Ethereum
 * truffle is a framework for building, deploying, testing applications on Ethereum
