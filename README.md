@@ -8,12 +8,8 @@ The name Agora literally means “gathering place” and refers to the public sp
 ## Design Documentation
 
 #### Dataflow Diagram (Gene and Sarson Notation)
-Create Post Function
-![Data Flow Diagram](https://github.com/aidenchia/dapp/blob/master/public/DFD.png)
-
-Like Post Function
-
-Reward Post Function
+Level 1 Diagram
+![Data Flow Diagram](https://github.com/aidenchia/dapp/blob/master/public/DFD_level1.png)
 
 ## Learning Points
 
