@@ -11,6 +11,9 @@ The name Agora literally means “gathering place” and refers to the public sp
 Level 1 Diagram
 ![Data Flow Diagram](https://github.com/aidenchia/dapp/blob/master/public/DFD_level1.png)
 
+Use Case Diagram
+![Use Case Diagram](https://github.com/aidenchia/dapp/blob/master/public/UCD.png)
+
 ## Learning Points
 
 #### Blockchain / Solidity / Ethereum
