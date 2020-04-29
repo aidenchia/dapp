@@ -15,7 +15,8 @@ Use Case Diagram
 ![Use Case Diagram](https://github.com/aidenchia/dapp/blob/master/public/UCD.png)
 
 ## Source Code and Test Data
-Found in [this repo](https://github.com/aidenchia/dapp.git)
+Source code found in [this repo](https://github.com/aidenchia/dapp.git).  
+Test data can be run by cloning the repo and running `truffle test` in root
 
 ## Learning Points
 
