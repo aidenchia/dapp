@@ -3,7 +3,7 @@ This is my decentralized application (dapp) written for my 50.037 Blockchain Tec
 <p align="center">
 <img src="https://github.com/aidenchia/dapp/blob/master/public/agora.jpg" width="700" height="462.5">
 </p>
-The name Agora literally means “gathering place” and refers to the public spaces in ancient Greek city-states where people used to gather freely to chat and trade items with one another in a completely decentralized manner. This dapp is the modern version of this ancient practice, where users can post content, like and share other posts, as well as trade items by making bids and offers to buy and sell. 
+The name Agora literally means “gathering place” and refers to the public spaces in ancient Greek city-states where people used to gather freely to chat and trade items with one another in a completely decentralized manner. This dapp is the modern version of this ancient practice, where users can post content, like and reward other posts, as well as trade items by making bids and offers to buy and sell. 
 
 ## Design Documentation
 
@@ -11,6 +11,9 @@ The name Agora literally means “gathering place” and refers to the public sp
 Create Post Function
 ![Data Flow Diagram](https://github.com/aidenchia/dapp/blob/master/public/DFD.png)
 
+Like Post Function
+
+Reward Post Function
 
 ## Learning Points
 
