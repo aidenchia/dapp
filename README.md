@@ -1,5 +1,5 @@
-# dapp
-Dapp for Blockchain module
+# Agora
+This is my decentralized application (dapp) written for my 50.037 Blockchain Technology module. It is a very simple decentralized social network / marketplace app built using Solidity 0.5.0 for the smart contract and ReactJS for the frontend. 
 
 ## Design Documentation
 
