@@ -16,7 +16,9 @@ Use Case Diagram
 
 ## Source Code and Test Data
 Source code found in [this repo](https://github.com/aidenchia/dapp.git).  
-Test data can be run by cloning the repo, cd to root, and run `truffle test` in Terminal, you should be able to see the following:
+
+Test data can be run by cloning the repo, cd to root, and run `truffle test` in Terminal, you should be able to see the following:  
+
 ![Terminal Screenshot](https://github.com/aidenchia/dapp/blob/master/public/truffletest.png)
 
 ## Learning Points
