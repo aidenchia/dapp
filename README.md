@@ -38,8 +38,8 @@ Test data can be run by cloning the repo, cd to root, and run `truffle test` in 
 `likePost` function is the shortest function with only 3 lines long hence it has the lowest gas fee.`newQuote` function uses up most amount of gas as it is one of the longest functions, plus it calls `keccak256(abi.encodePacked(now, msg.sender, nonce))` twice and this has high gas costs.
 
 #### Security
-
-#### Performance
+* No sensitive personal information recorded on the smart contract
+* Use of address.transfer() which forwards 2,300 gas stipend and is safe against reentrancy
 
 ## Learning Points
 
