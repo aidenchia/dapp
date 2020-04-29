@@ -1,7 +1,7 @@
 # Agora
 This is my decentralized application (dapp) written for my 50.037 Blockchain Technology module. It is a very simple decentralized social network / marketplace app built using Solidity 0.5.0 for the smart contract and ReactJS for the frontend.   
 
-<img src="https://github.com/aidenchia/dapp/blob/master/public/agora.jpg" width="700" height="462.5">
+<img src="https://github.com/aidenchia/dapp/blob/master/public/agora.jpg" width="700" height="462.5" align="center">
 The name Agora literally means “gathering place” and refers to the public spaces in ancient Greek city-states where people used to gather freely to chat and trade items with one another in a completely decentralized manner. This dapp is the modern version of this ancient practice, where users can post content, like and share other posts, as well as trade items by making bids and offers to buy and sell. 
 
 ## Design Documentation
