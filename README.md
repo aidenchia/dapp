@@ -1,6 +1,13 @@
 # dapp
 Dapp for Blockchain module
 
+### Design Documentation
+
+#### Dataflow Diagram
+Create Post Function
+![Data Flow Diagram](https://github.com/aidenchia/dapp/blob/master/public/DFD.png)
+
+
 ### Learning Points
 
 #### Blockchain / Solidity / Ethereum
