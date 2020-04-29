@@ -40,7 +40,6 @@ Test data can be run by cloning the repo, cd to root, and run `truffle test` in 
 #### Security
 * No sensitive personal information recorded on the smart contract
 * Use of address.transfer() which forwards 2,300 gas stipend and is safe against reentrancy
-* Functions such as `likePost` and `rewardPost` all have `require(_id > 0 && _id <= numPosts);` statement to check that post ID is within range, where `numPosts` is a state variable that keeps track of the total number of posts
 * `createPost` function checks that user input by string is non-empty and limited to less than 560 bytes: `require(bytes(_content).length > 0 && bytes(_content).length < 560);`
 
 ## Learning Points
