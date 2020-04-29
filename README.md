@@ -1,7 +1,7 @@
 # dapp
 Dapp for Blockchain module
 
-### Design Documentation
+### **Design Documentation**
 
 #### Dataflow Diagram
 Create Post Function
