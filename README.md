@@ -28,6 +28,14 @@ Test data can be run by cloning the repo, cd to root, and run `truffle test` in 
 ## Analysis
 
 #### Gas Usage
+* `likePost` function, gas fee: 0.00132 ETH
+* `rewardPost` function, gas fee: 0.002331 ETH
+* `clearOffer` function, gas fee: 0.002379 ETH
+* `createPost` function, gas fee: 0.003558 ETH 
+* `newQuote` function, gas fee: 0.005375 ETH 
+* Deploy the contract, gas used: 0.0443963 ETH  
+
+`likePost` function is the shortest function with only 3 lines long hence it has the lowest gas fee.`newQuote` function uses up most amount of gas as it calls `keccak256(abi.encodePacked(now, msg.sender, nonce))` twice to determine if bid/offer will go through and to determine the new bid-offer spread.
 
 #### Security
 
