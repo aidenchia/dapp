@@ -22,6 +22,8 @@ Test data can be run by cloning the repo, cd to root, and run `truffle test` in 
 ![Terminal Screenshot](https://github.com/aidenchia/dapp/blob/master/public/truffletest.png)
 
 ## Screenshots 
+![Frontend 1](https://github.com/aidenchia/dapp/blob/master/public/UI1.png)
+![Frontend 2](https://github.com/aidenchia/dapp/blob/master/public/UI2.png)
 
 ## Analysis
 
